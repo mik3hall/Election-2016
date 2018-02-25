@@ -2,5 +2,5 @@
 
 Number crunching the 2016 Presidential election with R.
 
-Take a look at the R Markdown generated HTML file.
+Take a look at the election2016.md for the output.
 
