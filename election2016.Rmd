@@ -1,0 +1,113 @@
+---
+title: "Election 2016"
+author: "Mike Hall"
+date: "2/24/2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+A recent news program discussion of gerrymandering got me interested in number
+crunching election data. There was a recent metric developed for legally establishing gerrymandering - [Partisan Gerrymandering and the Efficiency Gap](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?referer=https://duckduckgo.com/&httpsredir=1&article=1946&context=public_law_and_legal_theory). 
+
+I may consider if that has any bearing here but it doesn't seem immediately likely. My main interest will be the 2016 presidential election. Obviously in a presidential election gerrymandering isn't a concern. Getting data on these things can be difficult. But through a variety of sources I was able to get presidential election results by county for '04 to '16. Having it at the county level might give large enough sample sizes so some statistics methods could make sense.
+
+```{r load}
+data04 <- read.csv("county04.csv")
+data08 <- read.csv("county08.csv")
+data12 <- read.csv("county12.csv")
+data16 <- read.csv("county16.csv")
+```
+
+Different sources seemed to slightly differ from other sources. But I believe the
+results are correct enough for my purposes. For example...
+
+```{r popular}
+diff16 <- data16$dem.Count16 - data16$gop.Count16
+sum(diff16)
+```
+
+Shows a democratic popular vote win of a million plus. [This page](https://en.wikipedia.org/wiki/United_States_presidential_elections_in_which_the_winner_lost_the_popular_vote#2016:_Donald_Trump) indicates that this should actually be 2,868,691. Out of 62,984,825 total votes I consider getting the correct result and this close as accurate enough.
+
+There has been considerable discussion of how Trump found his way through to a 
+Electoral college win despite this. Talk of Russian hacker interference and Wikileaks, also the Comey letter. Mainly, the conventional wisdom seems to be that the Democrats simply didn't reach the voters that they had to have. What I am mainly would like to consider is what the numbers might tell us about how this result was reached.
+
+## Simple probability and counting - Party flipping by county
+
+To begin with I am going to ignore actual vote total and just count up counties flipping and compare 2016 to earlier years concerning the probabilities of counties flipping. I represent a county flipping parties as (1 = Rep->Dem,0 = no change, or -1 = Dem->Rep). See the flips.csv dataset.  
+
+```{r load flips, echo=FALSE}
+flips <- read.csv("flips.csv")
+by.state <- read.csv("state_probs.csv")
+```
+
+From election to election...
+```{r election flips, echo=FALSE}
+cat("2008")
+table(flips$f0408)
+cat("2012")
+table(flips$f0812)
+cat("2016")
+table(flips$f1216)
+```
+It can be seen that there was a big shift in counties from Republican to Democrat in the 2008 election. This might of been 'making a statement' votes against a unpopular Bush presidency or it could of been the historic Obama candidacy. For whatever reason it was a major shift. 
+
+This trend did not continue. Already in the 2012 election many more counties were reverting to Republican. Was this what is known in statistics as [Reversion to the mean?](https://en.wikipedia.org/wiki/Regression_toward_the_mean). Normally Republican tending counties voting more as usual? Or something else? Maybe a reversal that the Democrats should of already been aware of for the 2016 election? 
+
+In the 2016 election counties continued flipping to Republican, only even more so. The last two elections more than reversed the Democrat county gains from 2008.
+
+The overall probability that a random county might flip...
+```{r random county, echo=FALSE}
+(sum(flips$f0408 != 0) + sum(flips$f0812 != 0) + sum(flips$f1216 != 0)) / (nrow(flips)*3)
+```
+
+So there has been about a 9% chance over the last 3 presidential elections that a random county will flip from it's party vote for the prior election. This is actually higher than I thought it would be.
+
+That is the percentage across the country with all things being equal. But they are not equal, some states are party base states while others are considered swing states. The probability a county might flip from state to state can be considerably different.
+
+The probabilites of a county flipping by state... 
+```{r by state, echo=FALSE}
+order.probs <- order(by.state$sdata,decreasing=TRUE)
+by.order <- by.state[order.probs,]
+cat("Top 10 highest probability party flipping states")
+head(by.order,10)
+cat("Top 10 lowest probability party flipping states")
+tail(by.order,10)
+```
+Somewhat interestingly, in checking the Top 10 states Clinton seems to have taken 7 of them for a significant 80 to 32 point lead in electoral college votes. Maybe a little interesting is that five states had no counties flip at all in the last three elections. Again, states can be considerably different.
+
+Two states commonly talked about as important swing states are Florida and Ohio. Their probabilities for county flipping are...
+
+```{r swing states, echo=FALSE}
+cat('Florida')
+by.state[by.state$states=="FL",]
+cat('Ohio')
+by.state[by.state$states=="OH",]
+```
+
+Neither is very high, Florida is actually fairly low with less than 5%. But both states flipped Republican from the 2012 election for a total of 47 electoral college votes. 
+
+Although the election to election numbers seemed significant for showing trends for my purposes it might make more sense to consider the states that flipped in 2016 and then drill down into their counties to see why. Or, the county flipping analysis is just too simplistic and actual vote tallies and possible unusual turnout need to be taken into account. 
+
+All things being equal doesn't apply to states and it doesn't to counties either. The Demcrat base counties tend to be urban and more highly populated than Republican. The number of Republican counties greatly exceeds the number of Democrat ones. 
+
+Over the last four elections the percentage of counties voting Republican was...
+```{r rep counties, echo=FALSE}
+(sum(data04$gop.Count04 > data04$dem.Count04)+sum(data08$gop.Count08 > data08$dem.Count08)+sum(data12$gop.Count12 > data12$dem.Count12)+sum(data16$gop.Count16 > data16$dem.Count16))/(nrow(data04)*4)
+```
+
+With the above mentioned trend in county flipping after the 2016 election this was...
+```{r 2016 rep counties, echo=FALSE}
+(sum(data16$gop.Count16 > data16$dem.Count16))/nrow(data16)
+```
+
+And Clinton won on popular vote. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties are not equal.
+
+If I continue to update this I will attempt to consider these other factors.
+
