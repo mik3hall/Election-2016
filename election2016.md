@@ -576,45 +576,89 @@ The Top 10 gains for each party...
 ## 60  Muskingum     4762
 ```
 
-```
-## [1] -380259
-```
-
-```
-## [1] 178205
-```
-
-```
-## [1] 558464
-```
-
-```
-## [1] 392192
-```
-
-```
-##      State    County dem.Count16 gop.Count16
-## 2021    OH     Adams        2293        8445
-## 2022    OH     Allen       12815       29858
-## 2023    OH   Ashland        5659       17169
-## 2024    OH Ashtabula       15191       22755
-## 2025    OH    Athens       15552       10816
-## 2026    OH  Auglaize        3825       18130
-```
-
-```
-## [1] -454983
-```
-
-```
-## [1] -454983
-```
-
-```
-## [1] 454983
-```
+It was a little difficult for me to understand how the numbers I'm getting accounted for the large Republican margin of victory. But with almost every county statewide shifting more Republican, and each Republican gain representing a Democrat loss, it seems that it does. 
 
 ## Pennsylvania
+
+The Republican margin of victory in the state was...
+
+```
+## [1] 44292
+```
+
+Flipped counties...
+
+
+```
+## 
+## -1  0  1 
+##  3 62  2
+```
+
+A couple actually flipped to Democrat.
+
+Which ones flipped...
+
+
+```
+##    flipped.pa diff12.pa diff16.pa
+## 1      Centre       -20      1456
+## 2     Chester     -1048     24606
+## 3        Erie     19034     -2348
+## 4     Luzerne      6005    -26054
+## 5 Northampton      5772     -5448
+```
+
+The overall averages...
+
+
+```
+##   V1 mean.d12 mean.r12 mean.d16 mean.r16
+## 1 PA 70006.60 64058.00 69790.60 71348.20
+```
+
+The Democrats lost hardly anything at all but the Republicans posted decent gains.
+
+The Top 10 gains for each party...
+
+
+```
+## Top 10 Democrat county gains
+```
+
+```
+##           names diff.d16
+## 46   Montgomery    23502
+## 15      Chester    17956
+## 2     Allegheny    14866
+## 9         Bucks     6263
+## 23     Delaware     4364
+## 51 Philadelphia     3518
+## 36    Lancaster     2958
+## 14       Centre     2878
+## 48  Northampton      922
+## 21   Cumberland      299
+```
+
+```
+## Top 10 Republican county gains
+```
+
+```
+##           names diff.r16
+## 40      Luzerne    19539
+## 67         York    15357
+## 51 Philadelphia    13578
+## 35   Lackawanna    13372
+## 65 Westmoreland    12998
+## 6         Berks    12237
+## 48  Northampton    12142
+## 54   Schuylkill    11781
+## 25         Erie    11066
+## 26      Fayette     8543
+```
+
+The Democrats did well in the top spots. These appear from Wikipedia to be somewhat typical base counties for them, highly populated and in the case of Chester high income. But getting past the first three places the Republican gains again take over in being better than the Democrat. Actually, even Philidelphia county itself shows Republican gains so Democrats were not entirely successful in preserving their base.
 
 ## Wisconsin
 

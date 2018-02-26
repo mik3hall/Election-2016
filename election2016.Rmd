@@ -416,9 +416,74 @@ cat("Top 10 Republican county gains")
 head(diff.r16.df,10)
 ```
 
-It was a little difficult for me to understand how the numbers I'm getting accounted for the large Republican margin of victory. But with almost every county statewide shifting Republican, and each Republican gain representing a Democrat loss, it seems that it does. 
+It was a little difficult for me to understand how the numbers I'm getting accounted for the large Republican margin of victory. But with almost every county statewide shifting more Republican, and each Republican gain representing a Democrat loss, it seems that it does. 
 
 ## Pennsylvania
+
+The Republican margin of victory in the state was...
+```{r penn win, echo=FALSE}
+abs(ev[ev$State=="PA","diff.16"])
+```
+
+Flipped counties...
+
+```{r flipped penn counties, echo=FALSE}
+table(flips[flips$State=="PA","f1216"])
+```
+
+A couple actually flipped to Democrat.
+
+Which ones flipped...
+
+```{r flipped penn counties data, echo=FALSE}
+pa <- flips[which(flips$State=="PA"),]
+flipped.pa <- pa[which(pa$f1216==-1 | pa$f1216==1),c("County")]
+flipped.pa <- as.character(flipped.pa)
+data12.pa <- data12[data12$State=="PA",]
+counties12 <- data12.pa[data12.pa$County %in% flipped.pa,]
+diff12.pa <- counties12$dem.Count12 - counties12$gop.Count12
+data16.pa <- data16[data16$State=="PA",]
+counties16 <- data16.pa[data16.pa$County %in% flipped.pa,]
+diff16.pa <- counties16$dem.Count16 - counties16$gop.Count16
+data.pa <- data.frame(cbind(flipped.pa,diff12.pa,diff16.pa))
+data.pa
+```
+
+The overall averages...
+
+```{r pa statewide means, echo=FALSE}
+mean.d12 <- sprintf("%.2f",mean(counties12$dem.Count12))
+mean.r12 <- sprintf("%.2f",mean(counties12$gop.Count12))
+mean.d16 <- sprintf("%.2f",mean(counties16$dem.Count16))
+mean.r16 <- sprintf("%.2f",mean(counties16$gop.Count16))
+
+state.means <- data.frame(cbind("PA",mean.d12,mean.r12,mean.d16,mean.r16))
+state.means
+```
+
+The Democrats lost hardly anything at all but the Republicans posted decent gains.
+
+The Top 10 gains for each party...
+
+```{r PA biggest gains, echo=FALSE}
+names <- as.character(data12[data12$State=="PA","County"])
+diff.d16 <- data16[data16$State=="PA","dem.Count16"] - data12[data12$State=="PA","dem.Count12"]
+diff.d16 <- as.numeric(diff.d16)
+diff.d16.df <- data.frame(names)
+diff.d16.df$diff.d16 <- diff.d16
+diff.d16.df <- diff.d16.df[order(diff.d16.df[,2],decreasing=TRUE),]
+cat("Top 10 Democrat county gains")
+head(diff.d16.df,10)
+diff.r16 <- data16[data16$State=="PA","gop.Count16"]-data12[data12$State=="PA","gop.Count12"]
+diff.r16 <- as.numeric(diff.r16)
+diff.r16.df <- data.frame(names)
+diff.r16.df$diff.r16 <- diff.r16
+diff.r16.df <- diff.r16.df[order(diff.r16.df[,2],decreasing=TRUE),]
+cat("Top 10 Republican county gains")
+head(diff.r16.df,10)
+```
+
+The Democrats did well in the top spots. These appear from Wikipedia to be somewhat typical base counties for them, highly populated and in the case of Chester high income. But getting past the first three places the Republican gains again take over in being better than the Democrat. Actually, even Philidelphia county itself shows Republican gains so Democrats were not entirely successful in preserving their base.
 
 ## Wisconsin
 
