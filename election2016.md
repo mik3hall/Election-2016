@@ -9,6 +9,8 @@ output:
 
 
 
+
+
 ## Introduction
 
 A recent news program discussion of gerrymandering got me interested in number
@@ -173,7 +175,102 @@ With the above mentioned trend in county flipping after the 2016 election this w
 ## [1] 0.8410256
 ```
 
-And Clinton won on popular vote. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties are not equal.
+And Clinton won on popular vote. Clearly she had wasted votes, this is what the gerrymandering "efficiency gap" is based on. Maybe it is a measure that can apply without gerrymandering. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties not being equal.
 
 If I continue to update this I will attempt to consider these other factors.
+
+******
+
+## 2016
+
+Taking things to the state level since this is where the electoral college votes are. We might ask at this level, what states flipped between 2012 and 2016?
+
+
+```
+##   State EV pop2010  dem12   rep12  dem16   rep16
+## 1    AL  9 4779736 795696 1255925 729547 1318255
+```
+
+```
+## 
+## -1  0 
+##  6 44
+```
+
+You can see that six states flipped from Democrat to Republican, the rest all stayed the same, with no Republican states flipping to Democrat ones.
+
+What were the six states that flipped Republican?
+
+
+```
+##    State EV diff.12 diff.16
+## 9     FL 29   74309 -112911
+## 15    IA  6   91927 -147314
+## 22    MI 16  449313  -10704
+## 35    OH 18  166272 -446841
+## 38    PA 20  309840  -44292
+## 49    WI 10  213019  -22748
+```
+
+These are the only six states. They decided the election. All other states had the same result as in 2012. 
+
+How many electoral votes did these states account for?
+
+
+```
+## [1] 99
+```
+
+Romney had 206 in in 2012, adding in the 99 gives Trump a definite win. It probably could of taken a couple less than the six for the win, if you want to figure that out. Then you could possibly say the remaining were actually the only states that had mattered.
+
+However, for what follows I will consider each of the six that flipped.
+
+## Florida
+
+The Republican margin of victory in the state was...
+
+```
+## [1] 112911
+```
+
+For seeing what happened in Florida I will go back to the county level and see what the flipped counties look like just for this state.
+
+
+```
+## 
+## -1  0 
+##  4 63
+```
+
+There are only four counties that flipped to Republican this election.
+
+
+```
+## 
+## -1  0 
+##  4 63
+```
+
+```
+##   flipped.fl diff12.fl diff16.fl
+## 1  Jefferson       137      -393
+## 2     Monroe       158     -2936
+## 3   Pinellas     25774     -5419
+## 4  St. Lucie      9667     -3436
+```
+
+The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed.
+
+## Iowa
+
+## Michigan
+
+## Ohio
+
+## Pennsylvania
+
+## Wisconsin
+
+
+
 

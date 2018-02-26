@@ -11,6 +11,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r Libraries, message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+```
+
 ## Introduction
 
 A recent news program discussion of gerrymandering got me interested in number
@@ -107,7 +111,99 @@ With the above mentioned trend in county flipping after the 2016 election this w
 (sum(data16$gop.Count16 > data16$dem.Count16))/nrow(data16)
 ```
 
-And Clinton won on popular vote. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties are not equal.
+And Clinton won on popular vote. Clearly she had wasted votes, this is what the gerrymandering "efficiency gap" is based on. Maybe it is a measure that can apply without gerrymandering. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties not being equal.
 
 If I continue to update this I will attempt to consider these other factors.
+
+******
+
+## 2016
+
+Taking things to the state level since this is where the electoral college votes are. We might ask at this level, what states flipped between 2012 and 2016?
+
+```{r get flipped states, echo=FALSE}
+state.flips <- function(s1,s2) {
+	flips <- c()
+	for (i in 1:length(s1)) {
+		if (s1[i] >= 0 && s2[i] >= 0) { flips <- c(flips,0) }
+		else if (s1[i] < 0 && s2[i] < 0) { flips <- c(flips,0) }
+		else if (s1[i] > 0 && s2[i] < 0) { flips <- c(flips,-1) }
+		else if (s1[i] < 0 && s2[i] > 0) { flips <- c(flips,1) }
+		else { flips <- c(flips,0) }
+	}
+	return(flips)
+}
+
+ev <- read.csv("electoral.csv")
+ev[with(ev,order("State")),]
+ev$diff.12 <- ev$dem12-ev$rep12
+ev$diff.16 <- ev$dem16-ev$rep16
+ev$flips <- state.flips(ev$diff.12,ev$diff.16)
+print(table(ev$flips))
+```
+
+You can see that six states flipped from Democrat to Republican, the rest all stayed the same, with no Republican states flipping to Democrat ones.
+
+What were the six states that flipped Republican?
+
+```{r flipped republican, echo=FALSE}
+flipped <- ev[ev$flips==-1,c("State","EV","diff.12","diff.16")]
+print(flipped)
+```
+
+These are the only six states. They decided the election. All other states had the same result as in 2012. 
+
+How many electoral votes did these states account for?
+
+```{r flipped electoral, echo=FALSE}
+sum(flipped$EV)
+```
+
+Romney had 206 in in 2012, adding in the 99 gives Trump a definite win. It probably could of taken a couple less than the six for the win, if you want to figure that out. Then you could possibly say the remaining were actually the only states that had mattered.
+
+However, for what follows I will consider each of the six that flipped.
+
+## Florida
+
+The Republican margin of victory in the state was...
+```{r florida win, echo=FALSE}
+abs(ev[ev$State=="FL","diff.16"])
+```
+
+For seeing what happened in Florida I will go back to the county level and see what the flipped counties look like just for this state.
+
+```{r flipped florida counties, echo=FALSE}
+table(flips[flips$State=="FL","f1216"])
+```
+
+There are only four counties that flipped to Republican this election.
+
+```{r flipped florida counties data, echo=FALSE}
+fl <- flips[which(flips$State=="FL"),]
+flipped.fl <- fl[which(fl$f1216==-1),c("County")]
+flipped.fl <- as.character(flipped.fl)
+data12.fl <- data12[data12$State=="FL",]
+counties12 <- data12.fl[data12.fl$County %in% flipped.fl,]
+diff12.fl <- counties12$dem.Count12 - counties12$gop.Count12
+data16.fl <- data16[data16$State=="FL",]
+counties16 <- data16.fl[data16.fl$County %in% flipped.fl,]
+diff16.fl <- counties16$dem.Count16 - counties16$gop.Count16
+data.fl <- data.frame(cbind(flipped.fl,diff12.fl,diff16.fl))
+data.fl
+```
+
+The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed. It may not be state wide but it does have to involve more than the flipped counties.
+
+## Iowa
+
+## Michigan
+
+## Ohio
+
+## Pennsylvania
+
+## Wisconsin
+
+
+
 
