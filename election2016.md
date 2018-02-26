@@ -488,11 +488,131 @@ The Top 10 gains for each party...
 ## 9         Bay     4592
 ```
 
-The Democrats managed gains in only six counties. They didn't do as well in Florida in hanging onto their base even losing ground in Macomb county which appears to be part of metro Detroit. A more high population Democrat type county. 
+The Democrats managed gains in only six counties. They didn't do as well as in Florida in hanging onto their base, even losing ground in Macomb county which appears to be part of metro Detroit. A more high population Democrat type county. 
 
-The loss seems statewide again. Although more due to Democrat's not doing as well as they might of rather than large scale Republican outperforming. This state could easily of gone Democrat. Macomb county alone could of given it to them if they had hung onto it.
+The loss seems statewide again. Although more due to the Democrat's not doing as well as they might of rather than large scale Republican outperforming. This state could easily of gone Democrat. Macomb county alone would of given it to them if they had hung onto it.
 
 ## Ohio
+
+The Republican margin of victory in the state was...
+
+```
+## [1] 446841
+```
+
+A big Republican win.
+
+Flipped counties...
+
+
+```
+## 
+## -1  0 
+##  9 79
+```
+
+Which ones...
+
+
+```
+##   flipped.oh diff12.oh diff16.oh
+## 1  Ashtabula      5074     -7564
+## 2       Erie      4314     -3609
+## 3     Lorain     20017      -388
+## 4 Montgomery      7795     -3105
+## 5     Ottawa       891     -4253
+## 6    Portage      3617     -7515
+## 7   Sandusky       544     -6312
+## 8   Trumbull     21901     -6022
+## 9       Wood      2599     -5294
+```
+
+The overall averages...
+
+
+```
+##   V1 mean.d12 mean.r12 mean.d16 mean.r16
+## 1 MI 45044.56 37627.67 36822.67 41718.44
+```
+
+A large Democrat decline and moderate Republican gains.
+
+The Top 10 gains for each party...
+
+
+```
+## Top 10 Democrat county gains
+```
+
+```
+##       names diff.d16
+## 25 Franklin    10307
+## 21 Delaware     3453
+## 83   Warren     1129
+## 38   Holmes     -802
+## 27   Gallia     -854
+## 61    Noble     -881
+## 31 Hamilton     -921
+## 80    Union    -1016
+## 82   Vinton    -1050
+## 58   Morgan    -1061
+```
+
+```
+## Top 10 Republican county gains
+```
+
+```
+##         names diff.r16
+## 50   Mahoning    11106
+## 78   Trumbull    10607
+## 76      Stark     9387
+## 47     Lorain     7251
+## 15 Columbiana     6308
+## 48      Lucas     6002
+## 45    Licking     5742
+## 43       Lake     5477
+## 4   Ashtabula     4865
+## 60  Muskingum     4762
+```
+
+```
+## [1] -380259
+```
+
+```
+## [1] 178205
+```
+
+```
+## [1] 558464
+```
+
+```
+## [1] 392192
+```
+
+```
+##      State    County dem.Count16 gop.Count16
+## 2021    OH     Adams        2293        8445
+## 2022    OH     Allen       12815       29858
+## 2023    OH   Ashland        5659       17169
+## 2024    OH Ashtabula       15191       22755
+## 2025    OH    Athens       15552       10816
+## 2026    OH  Auglaize        3825       18130
+```
+
+```
+## [1] -454983
+```
+
+```
+## [1] -454983
+```
+
+```
+## [1] 454983
+```
 
 ## Pennsylvania
 

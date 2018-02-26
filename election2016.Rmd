@@ -316,7 +316,6 @@ Leaning Republican.
 The overall averages...
 
 ```{r mi statewide means, echo=FALSE}
-# sprintf("%.10f",0.25)
 mean.d12 <- sprintf("%.2f",mean(counties12$dem.Count12))
 mean.r12 <- sprintf("%.2f",mean(counties12$gop.Count12))
 mean.d16 <- sprintf("%.2f",mean(counties16$dem.Count16))
@@ -353,6 +352,71 @@ The Democrats managed gains in only six counties. They didn't do as well as in F
 The loss seems statewide again. Although more due to the Democrat's not doing as well as they might of rather than large scale Republican outperforming. This state could easily of gone Democrat. Macomb county alone would of given it to them if they had hung onto it.
 
 ## Ohio
+
+The Republican margin of victory in the state was...
+```{r ohio win, echo=FALSE}
+abs(ev[ev$State=="OH","diff.16"])
+```
+
+A big Republican win.
+
+Flipped counties...
+
+```{r flipped ohio counties, echo=FALSE}
+table(flips[flips$State=="OH","f1216"])
+```
+
+Which ones...
+
+```{r flipped ohio counties data, echo=FALSE}
+oh <- flips[which(flips$State=="OH"),]
+flipped.oh <- oh[which(oh$f1216==-1),c("County")]
+flipped.oh <- as.character(flipped.oh)
+data12.oh <- data12[data12$State=="OH",]
+counties12 <- data12.oh[data12.oh$County %in% flipped.oh,]
+diff12.oh <- counties12$dem.Count12 - counties12$gop.Count12
+data16.oh <- data16[data16$State=="OH",]
+counties16 <- data16.oh[data16.oh$County %in% flipped.oh,]
+diff16.oh <- counties16$dem.Count16 - counties16$gop.Count16
+data.oh <- data.frame(cbind(flipped.oh,diff12.oh,diff16.oh))
+data.oh
+```
+
+The overall averages...
+
+```{r oh statewide means, echo=FALSE}
+mean.d12 <- sprintf("%.2f",mean(counties12$dem.Count12))
+mean.r12 <- sprintf("%.2f",mean(counties12$gop.Count12))
+mean.d16 <- sprintf("%.2f",mean(counties16$dem.Count16))
+mean.r16 <- sprintf("%.2f",mean(counties16$gop.Count16))
+
+state.means <- data.frame(cbind("MI",mean.d12,mean.r12,mean.d16,mean.r16))
+state.means
+```
+
+A large Democrat decline and moderate Republican gains.
+
+The Top 10 gains for each party...
+
+```{r OH biggest gains, echo=FALSE}
+names <- as.character(data12[data12$State=="OH","County"])
+diff.d16 <- data16[data16$State=="OH","dem.Count16"] - data12[data12$State=="OH","dem.Count12"]
+diff.d16 <- as.numeric(diff.d16)
+diff.d16.df <- data.frame(names)
+diff.d16.df$diff.d16 <- diff.d16
+diff.d16.df <- diff.d16.df[order(diff.d16.df[,2],decreasing=TRUE),]
+cat("Top 10 Democrat county gains")
+head(diff.d16.df,10)
+diff.r16 <- data16[data16$State=="OH","gop.Count16"]-data12[data12$State=="OH","gop.Count12"]
+diff.r16 <- as.numeric(diff.r16)
+diff.r16.df <- data.frame(names)
+diff.r16.df$diff.r16 <- diff.r16
+diff.r16.df <- diff.r16.df[order(diff.r16.df[,2],decreasing=TRUE),]
+cat("Top 10 Republican county gains")
+head(diff.r16.df,10)
+```
+
+It was a little difficult for me to understand how the numbers I'm getting accounted for the large Republican margin of victory. But with almost every county statewide shifting Republican, and each Republican gain representing a Democrat loss, it seems that it does. 
 
 ## Pennsylvania
 
