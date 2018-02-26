@@ -658,10 +658,103 @@ The Top 10 gains for each party...
 ## 26      Fayette     8543
 ```
 
-The Democrats did well in the top spots. These appear from Wikipedia to be somewhat typical base counties for them, highly populated and in the case of Chester high income. But getting past the first three places the Republican gains again take over in being better than the Democrat. Actually, even Philidelphia county itself shows Republican gains so Democrats were not entirely successful in preserving their base.
+The Democrats did well in the top spots. These appear from Wikipedia to be somewhat typical base counties for them, highly populated and in the case of Chester high income. But getting past the first three places the Republican gains again take over in being better than the Democrat ones. Actually, even Philidelphia county itself shows superior Republican gains so Democrats were not entirely successful in preserving their base.
 
 ## Wisconsin
 
+The Republican margin of victory in the state was...
+
+```
+## [1] 22748
+```
+
+Again, pretty close.
+
+Flipped counties...
 
 
+```
+## 
+## -1  0 
+## 22 50
+```
 
+Which ones flipped...
+
+
+```
+##     flipped.wi diff12.wi diff16.wi
+## 1        Adams       894     -2203
+## 2      Buffalo       217     -1518
+## 3     Columbia      4144      -635
+## 4     Crawford      1558      -418
+## 5         Door      1229      -558
+## 6         Dunn      1093     -2462
+## 7       Forest       249     -1204
+## 8        Grant      3319     -2300
+## 9      Jackson      1397     -1086
+## 10      Juneau       837     -3088
+## 11     Kenosha      9896      -255
+## 12   Lafayette      1221      -689
+## 13     Lincoln        99     -3030
+## 14   Marquette       354     -1904
+## 15       Pepin        82      -883
+## 16       Price         3     -1891
+## 17      Racine      3714     -4114
+## 18    Richland      1389      -444
+## 19      Sawyer        46     -1779
+## 20 Trempealeau      1898     -1725
+## 21      Vernon      2096      -643
+## 22   Winnebago      3337     -6393
+```
+
+The overall averages...
+
+
+```
+##   V1 mean.d12 mean.r12 mean.d16 mean.r16
+## 1 WI 12237.05 10461.05  9504.32 11287.14
+```
+
+Fairly small both ways, but Democrat losses and Republican gains.
+
+The Top 10 gains for each party...
+
+
+```
+## Top 10 Democrat county gains
+```
+
+```
+##        names diff.d16
+## 13      Dane     2117
+## 68  Waukesha     1582
+## 46   Ozaukee     1092
+## 40 Menominee     -188
+## 19  Florence     -286
+## 26      Iron     -510
+## 47     Pepin     -530
+## 21    Forest     -838
+## 7    Burnett    -1033
+## 6    Buffalo    -1038
+```
+
+```
+## Top 10 Republican county gains
+```
+
+```
+##        names diff.r16
+## 45 Outagamie     4285
+## 56      Sauk     3042
+## 43    Oconto     2564
+## 9   Chippewa     2541
+## 5      Brown     2454
+## 37  Marathon     2442
+## 38 Marinette     2386
+## 3     Barron     2182
+## 22     Grant     2092
+## 69   Waupaca     2024
+```
+
+The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.

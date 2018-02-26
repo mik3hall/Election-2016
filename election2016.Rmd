@@ -483,10 +483,71 @@ cat("Top 10 Republican county gains")
 head(diff.r16.df,10)
 ```
 
-The Democrats did well in the top spots. These appear from Wikipedia to be somewhat typical base counties for them, highly populated and in the case of Chester high income. But getting past the first three places the Republican gains again take over in being better than the Democrat. Actually, even Philidelphia county itself shows Republican gains so Democrats were not entirely successful in preserving their base.
+The Democrats did well in the top spots. These appear from Wikipedia to be somewhat typical base counties for them, highly populated and in the case of Chester high income. But getting past the first three places the Republican gains again take over in being better than the Democrat ones. Actually, even Philidelphia county itself shows superior Republican gains so Democrats were not entirely successful in preserving their base.
 
 ## Wisconsin
 
+The Republican margin of victory in the state was...
+```{r wisc win, echo=FALSE}
+abs(ev[ev$State=="WI","diff.16"])
+```
 
+Again, pretty close.
 
+Flipped counties...
 
+```{r flipped wisc counties, echo=FALSE}
+table(flips[flips$State=="WI","f1216"])
+```
+
+Which ones flipped...
+
+```{r flipped wisc counties data, echo=FALSE}
+wi <- flips[which(flips$State=="WI"),]
+flipped.wi <- wi[which(wi$f1216==-1),c("County")]
+flipped.wi <- as.character(flipped.wi)
+data12.wi <- data12[data12$State=="WI",]
+counties12 <- data12.wi[data12.wi$County %in% flipped.wi,]
+diff12.wi <- counties12$dem.Count12 - counties12$gop.Count12
+data16.wi <- data16[data16$State=="WI",]
+counties16 <- data16.wi[data16.wi$County %in% flipped.wi,]
+diff16.wi <- counties16$dem.Count16 - counties16$gop.Count16
+data.wi <- data.frame(cbind(flipped.wi,diff12.wi,diff16.wi))
+data.wi
+```
+
+The overall averages...
+
+```{r wisc statewide means, echo=FALSE}
+mean.d12 <- sprintf("%.2f",mean(counties12$dem.Count12))
+mean.r12 <- sprintf("%.2f",mean(counties12$gop.Count12))
+mean.d16 <- sprintf("%.2f",mean(counties16$dem.Count16))
+mean.r16 <- sprintf("%.2f",mean(counties16$gop.Count16))
+
+state.means <- data.frame(cbind("WI",mean.d12,mean.r12,mean.d16,mean.r16))
+state.means
+```
+
+Fairly small both ways, but Democrat losses and Republican gains.
+
+The Top 10 gains for each party...
+
+```{r WI biggest gains, echo=FALSE}
+names <- as.character(data12[data12$State=="WI","County"])
+diff.d16 <- data16[data16$State=="WI","dem.Count16"] - data12[data12$State=="WI","dem.Count12"]
+diff.d16 <- as.numeric(diff.d16)
+diff.d16.df <- data.frame(names)
+diff.d16.df$diff.d16 <- diff.d16
+diff.d16.df <- diff.d16.df[order(diff.d16.df[,2],decreasing=TRUE),]
+cat("Top 10 Democrat county gains")
+head(diff.d16.df,10)
+diff.r16 <- data16[data16$State=="WI","gop.Count16"]-data12[data12$State=="WI","gop.Count12"]
+diff.r16 <- as.numeric(diff.r16)
+diff.r16.df <- data.frame(names)
+diff.r16.df$diff.r16 <- diff.r16
+diff.r16.df <- diff.r16.df[order(diff.r16.df[,2],decreasing=TRUE),]
+cat("Top 10 Republican county gains")
+head(diff.r16.df,10)
+```
+
+The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.
