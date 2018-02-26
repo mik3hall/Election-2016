@@ -234,7 +234,7 @@ sum(diff16)</code></pre>
 <h2>Florida</h2>
 <p>The Republican margin of victory in the state was…</p>
 <pre><code>## [1] 112911</code></pre>
-<p>For seeing what happened in Florida I will go back to the county level and see what the flipped counties look like just for this state.</p>
+<p>For seeing what happened in Florida I will first go back to the county level and see what the flipped counties look like just for this state.</p>
 <pre><code>## 
 ## -1  0 
 ##  4 63</code></pre>
@@ -244,11 +244,50 @@ sum(diff16)</code></pre>
 ## 2     Monroe       158     -2936
 ## 3   Pinellas     25774     -5419
 ## 4  St. Lucie      9667     -3436</code></pre>
-<p>The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed. It may not be state wide but it does have to involve more than the flipped counties.</p>
-<p>Consider the average party results for the 2012 and 2016 elections for state wide.</p>
+<p>The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed. It may not be statewide but it does have to involve more than the flipped counties.</p>
+<p>Consider the average party results for the 2012 and 2016 elections for statewide.</p>
 <pre><code>##   V1 mean.d12 mean.r12 mean.d16 mean.r16
 ## 1 FL    82043    73109 80656.25 83702.25</code></pre>
 <p>So statewide the Democrat vote tallies are on average down while the Republican tallies are up on average. Is this really statewide or can some smaller subset of counties be identified that swung the election?</p>
+<p>From the averages it seems that Republican gains were more a factor than Democrat losses in voter turnout. But I will consder both, which were the biggest county gainers and which had the largest losses?</p>
+<p>Looking at the Top 10 gains for each party…</p>
+<pre><code>## Top 10 Democrat county gains</code></pre>
+<pre><code>##           names diff.d16
+## 43   Miami-Dade    82230
+## 48       Orange    55352
+## 6       Broward    39526
+## 50   Palm Beach    21993
+## 28 Hillsborough    20264
+## 49      Osceola    18086
+## 35          Lee    14645
+## 11      Collier     9263
+## 57     Seminole     9176
+## 58    St. Johns     7882</code></pre>
+<pre><code>## Top 10 Republican county gains</code></pre>
+<pre><code>##           names diff.r16
+## 35          Lee    37029
+## 51        Pasco    29608
+## 53         Polk    25650
+## 52     Pinellas    25554
+## 64      Volusia    25290
+## 50   Palm Beach    23505
+## 5       Brevard    22350
+## 40      Manatee    16065
+## 28 Hillsborough    16024
+## 6       Broward    14789</code></pre>
+<p>You can see that for the first three counties the Democrats did very well. This would be in their more urban, highly populated base. After that the Republican gains start being greater, this begins with Pinellas which you might remember was one of the counties that actually flipped between 2012 and 2016.</p>
+<p>In table form…</p>
+<pre><code>## Democrat gains greater than Republican gains</code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+##     3    64</code></pre>
+<p>Counties where the Republicans out-gained the Democrats number 64 to 3.</p>
+<p>If the gains are totaled up…</p>
+<pre><code>## Total Democrat gains between 2012 and 2016</code></pre>
+<pre><code>## [1] 250475</code></pre>
+<pre><code>## Total Republican gains between 2012 and 2016</code></pre>
+<pre><code>## [1] 443434</code></pre>
+<p>Both parties gained votes in 2016. You can’t really even say that the Democrats underperformed. It’s just that the Replubicans very considerably outperformed across the state. There is no key subset of counties for the Democrats to address. They need statewide improvement or less Republican improvement.</p>
 </div>
 <div id="iowa" class="section level2">
 <h2>Iowa</h2>
