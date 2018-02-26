@@ -194,6 +194,20 @@ data.fl
 
 The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed. It may not be state wide but it does have to involve more than the flipped counties.
 
+Consider the average party results for the 2012 and 2016 elections for state wide.
+
+```{r state wide means, echo=FALSE}
+mean.d12 <- mean(counties12$dem.Count12)
+mean.r12 <- mean(counties12$gop.Count12)
+mean.d16 <- mean(counties16$dem.Count16)
+mean.r16 <- mean(counties16$gop.Count16)
+
+state.means <- data.frame(cbind("FL",mean.d12,mean.r12,mean.d16,mean.r16))
+state.means
+```
+
+So statewide the Democrat vote tallies are on average down while the Republican tallies are up on average. Is this really statewide or can some smaller subset of counties be identified that swung the election?
+
 ## Iowa
 
 ## Michigan

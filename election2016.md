@@ -246,12 +246,6 @@ There are only four counties that flipped to Republican this election.
 
 
 ```
-## 
-## -1  0 
-##  4 63
-```
-
-```
 ##   flipped.fl diff12.fl diff16.fl
 ## 1  Jefferson       137      -393
 ## 2     Monroe       158     -2936
@@ -259,7 +253,17 @@ There are only four counties that flipped to Republican this election.
 ## 4  St. Lucie      9667     -3436
 ```
 
-The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed.
+The vote swings for the four flipped counties account for only a portion of the Republican margin of victory. The rest has to be other counties where the Republican vote outperformed or the Democrat vote underperformed. It may not be state wide but it does have to involve more than the flipped counties.
+
+Consider the average party results for the 2012 and 2016 elections for state wide.
+
+
+```
+##   V1 mean.d12 mean.r12 mean.d16 mean.r16
+## 1 FL    82043    73109 80656.25 83702.25
+```
+
+So statewide the Democrat vote tallies are on average down while the Republican tallies are up on average. Is this really statewide or can some smaller subset of counties be identified that swung the election?
 
 ## Iowa
 
