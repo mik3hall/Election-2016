@@ -109,8 +109,6 @@ With the above mentioned trend in county flipping after the 2016 election this w
 
 And Clinton won on popular vote. Clearly she had wasted votes, this is what the gerrymandering "efficiency gap" is based on. Maybe it is a measure that can apply without gerrymandering. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties not being equal.
 
-If I continue to update this I will attempt to consider these other factors.
-
 ******
 
 ## 2016
@@ -163,8 +161,30 @@ However, for what follows I will consider each of the six that flipped.
 
 The Republican margin of victory in the state was...
 ```{r florida win, echo=FALSE}
-abs(ev[ev$State=="FL","diff.16"])
+margin <- abs(ev[ev$State=="FL","diff.16"])
+per <- margin/(ev[ev$State=="FL","dem16"]+ev[ev$State=="FL","rep16"])
+print(paste(margin," (",round(per*100,2),"%)",sep=""))
 ```
+
+```{r fl voter turnout, echo=FALSE}
+cat("Florida Voter Turnout")
+dem.04 <- sum(data04[data04$State=="FL","dem.Count04"])
+gop.04 <- sum(data04[data04$State=="FL","gop.Count04"])
+dem.08 <- sum(data08[data08$State=="FL","dem.Count08"])
+gop.08 <- sum(data08[data08$State=="FL","gop.Count08"])
+dem.12 <- sum(data12[data12$State=="FL","dem.Count12"])
+gop.12 <- sum(data12[data12$State=="FL","gop.Count12"])
+dem.16 <- sum(data16[data16$State=="FL","dem.Count16"])
+gop.16 <- sum(data16[data16$State=="FL","gop.Count16"])
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
+```
+
+I had originally thought there might be some way to differentiate between new voters turning out and voters switching parties in their voting. Here the number of Democrat voters increases as well as the Republican ones. It is difficult to say that they had voters changing parties. But there really is no way to know. 
+
+Turnout across the election years will still be provided as an indication of voter motivation in the election.
 
 For seeing what happened in Florida I will first go back to the county level and see what the flipped counties look like just for this state.
 
@@ -253,7 +273,25 @@ Both parties gained votes in 2016. You can't really even say that the Democrats 
 
 The Republican margin of victory in the state was...
 ```{r iowa win, echo=FALSE}
-abs(ev[ev$State=="IA","diff.16"])
+margin <- abs(ev[ev$State=="IA","diff.16"])
+per <- margin/(ev[ev$State=="IA","dem16"]+ev[ev$State=="IA","rep16"])
+print(paste(margin," (",round(per*100,2),"%)",sep=""))
+```
+
+```{r ia voter turnout, echo=FALSE}
+cat("Iowa Voter Turnout")
+dem.04 <- sum(data04[data04$State=="IA","dem.Count04"])
+gop.04 <- sum(data04[data04$State=="IA","gop.Count04"])
+dem.08 <- sum(data08[data08$State=="IA","dem.Count08"])
+gop.08 <- sum(data08[data08$State=="IA","gop.Count08"])
+dem.12 <- sum(data12[data12$State=="IA","dem.Count12"])
+gop.12 <- sum(data12[data12$State=="IA","gop.Count12"])
+dem.16 <- sum(data16[data16$State=="IA","dem.Count16"])
+gop.16 <- sum(data16[data16$State=="IA","gop.Count16"])
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
 ```
 
 Flipped counties...
@@ -284,10 +322,28 @@ I don't know if I have the data to indicate whether this result is more unusual 
 
 The Republican margin of victory in the state was...
 ```{r michigan win, echo=FALSE}
-abs(ev[ev$State=="MI","diff.16"])
+margin <- abs(ev[ev$State=="MI","diff.16"])
+per <- margin/(ev[ev$State=="MI","dem16"]+ev[ev$State=="MI","rep16"])
+print(paste(margin," (",round(per*100,2),"%)",sep=""))
 ```
 
 Very close.
+
+```{r mi voter turnout, echo=FALSE}
+cat("Michigan Voter Turnout")
+dem.04 <- sum(data04[data04$State=="MI","dem.Count04"])
+gop.04 <- sum(data04[data04$State=="MI","gop.Count04"])
+dem.08 <- sum(data08[data08$State=="MI","dem.Count08"])
+gop.08 <- sum(data08[data08$State=="MI","gop.Count08"])
+dem.12 <- sum(data12[data12$State=="MI","dem.Count12"])
+gop.12 <- sum(data12[data12$State=="MI","gop.Count12"])
+dem.16 <- sum(data16[data16$State=="MI","dem.Count16"])
+gop.16 <- sum(data16[data16$State=="MI","gop.Count16"])
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
+```
 
 Flipped counties...
 
@@ -355,10 +411,28 @@ The loss seems statewide again. Although more due to the Democrat's not doing as
 
 The Republican margin of victory in the state was...
 ```{r ohio win, echo=FALSE}
-abs(ev[ev$State=="OH","diff.16"])
+margin <- abs(ev[ev$State=="OH","diff.16"])
+per <- margin/(ev[ev$State=="OH","dem16"]+ev[ev$State=="OH","rep16"])
+print(paste(margin," (",round(per*100,2),"%)",sep=""))
 ```
 
 A big Republican win.
+
+```{r oh voter turnout, echo=FALSE}
+cat("Ohio Voter Turnout")
+dem.04 <- sum(data04[data04$State=="OH","dem.Count04"])
+gop.04 <- sum(data04[data04$State=="OH","gop.Count04"])
+dem.08 <- sum(data08[data08$State=="OH","dem.Count08"])
+gop.08 <- sum(data08[data08$State=="OH","gop.Count08"])
+dem.12 <- sum(data12[data12$State=="OH","dem.Count12"])
+gop.12 <- sum(data12[data12$State=="OH","gop.Count12"])
+dem.16 <- sum(data16[data16$State=="OH","dem.Count16"])
+gop.16 <- sum(data16[data16$State=="OH","gop.Count16"])
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
+```
 
 Flipped counties...
 
@@ -422,7 +496,25 @@ It was a little difficult for me to understand how the numbers I'm getting accou
 
 The Republican margin of victory in the state was...
 ```{r penn win, echo=FALSE}
-abs(ev[ev$State=="PA","diff.16"])
+margin <- abs(ev[ev$State=="PA","diff.16"])
+per <- margin/(ev[ev$State=="PA","dem16"]+ev[ev$State=="PA","rep16"])
+print(paste(margin," (",round(per*100,2),"%)",sep=""))
+```
+
+```{r pa voter turnout, echo=FALSE}
+cat("Pennsylvania Voter Turnout")
+dem.04 <- sum(data04[data04$State=="PA","dem.Count04"])
+gop.04 <- sum(data04[data04$State=="PA","gop.Count04"])
+dem.08 <- sum(data08[data08$State=="PA","dem.Count08"])
+gop.08 <- sum(data08[data08$State=="PA","gop.Count08"])
+dem.12 <- sum(data12[data12$State=="PA","dem.Count12"])
+gop.12 <- sum(data12[data12$State=="PA","gop.Count12"])
+dem.16 <- sum(data16[data16$State=="PA","dem.Count16"])
+gop.16 <- sum(data16[data16$State=="PA","gop.Count16"])
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
 ```
 
 Flipped counties...
@@ -489,10 +581,28 @@ The Democrats did well in the top spots. These appear from Wikipedia to be somew
 
 The Republican margin of victory in the state was...
 ```{r wisc win, echo=FALSE}
-abs(ev[ev$State=="WI","diff.16"])
+margin <- abs(ev[ev$State=="WI","diff.16"])
+per <- margin/(ev[ev$State=="WI","dem16"]+ev[ev$State=="WI","rep16"])
+print(paste(margin," (",round(per*100,2),"%)",sep=""))
 ```
 
 Again, pretty close.
+
+```{r wi voter turnout, echo=FALSE}
+cat("Wisconsin Voter Turnout")
+dem.04 <- sum(data04[data04$State=="WI","dem.Count04"])
+gop.04 <- sum(data04[data04$State=="WI","gop.Count04"])
+dem.08 <- sum(data08[data08$State=="WI","dem.Count08"])
+gop.08 <- sum(data08[data08$State=="WI","gop.Count08"])
+dem.12 <- sum(data12[data12$State=="WI","dem.Count12"])
+gop.12 <- sum(data12[data12$State=="WI","gop.Count12"])
+dem.16 <- sum(data16[data16$State=="WI","dem.Count16"])
+gop.16 <- sum(data16[data16$State=="WI","gop.Count16"])
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
+```
 
 Flipped counties...
 
@@ -551,3 +661,65 @@ head(diff.r16.df,10)
 ```
 
 The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.
+
+******
+
+## Voter Turnout
+
+Overall voter turnout.
+
+```{r overall voter turnout, echo=FALSE}
+cat("Overall Voter Turnout")
+dem.04 <- sum(data04$dem.Count04)
+gop.04 <- sum(data04$gop.Count04)
+dem.08 <- sum(data08$dem.Count08)
+gop.08 <- sum(data08$gop.Count08)
+dem.12 <- sum(data12$dem.Count12)
+gop.12 <- sum(data12$gop.Count12)
+dem.16 <- sum(data16$dem.Count16)
+gop.16 <- sum(data16$gop.Count16)
+turnouts <- data.frame(cbind(c(dem.04,gop.04,dem.04+gop.04),c(dem.08,gop.08,dem.08+gop.08),c(dem.12,gop.12,dem.12+gop.12),c(dem.16,gop.16,dem.16+gop.16)))
+names(turnouts) <- c("2004","2008","2012","2016")
+row.names(turnouts) <- c("Dem","Gop","Tot")
+turnouts
+
+```
+
+2016 was the second best of the four elections for both parties. Democrats better than Republican, again they had the popular vote edge.
+
+## Swing States
+
+Swing states are still of interest to me. Again, Florida and Ohio are frequently discussed as swing states and both are included above. The six critical states for 2016, in hindsight, compared to the 2012 election. But how well can you tell for 2020 who the critical battleground states will be? 
+
+It seemed to me that are some similarites here to finance. In finance risk is measured as volatility. How extremely do prices, or whatever, swing up and down? I did some checking for anything related to elections and volatility. I came across the [Pedersen Index](https://en.wikipedia.org/wiki/Pedersen_index). But this mainly seems concerned with volatility between multiple parties in European elections. Not regional volatility in a two party system. Not useful for my purposes.
+
+Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this [Washington Post article](https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/), specifically towards the bottom, the graphic where it says "Some swing states have low scores". You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren't that much higher.
+
+After some thought it seemed to me that what I am interested in is the probability that a state will swing. With 'P' indicating probability that seemed like it should be...
+
+P(swing) = P(moves right way)*P(moves enough to swing)
+
+With...
+
+P(moves the right way) = # of times voted for that party/times voted
+
+P(moves enough) = # of times moved enough/times moved
+
+There again seems to be a question of how is sample size worked to give meaningful statistics. At the state or individual county level there might not be enough data. Possibly it can be summed across counties somehow for the state? But then don't number of votes have to also be accounted for, something like [Effect size](https://en.wikipedia.org/wiki/Effect_size). How much does each county contribute to the possibility that the state flips?
+
+## Competitiveness
+
+To begin with I will consider something a little simpler, party margin of victory as a percentage as shown above for the six states. This could relate to the probabilities above as one measure of the distance that needs to be moved for a state to flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the more it is competitive. Possibly, a rough metric of how likely it is a swing state itself.
+
+```{r competitiveness, echo=FALSE}
+margins <- ev[,"diff.16"]
+pers <- sprintf("%.4f",margins/(ev[,"dem16"]+ev[,"rep16"]))
+comp <- data.frame(cbind(as.character(ev$State),pers))
+names(comp) <- c("State","Percentage")
+sorted <- order(comp$Percentage)
+comp <- comp[sorted,]
+comp$Percentage <- as.numeric(as.character(comp$Percentage))*100
+head(comp,10)
+```
+
+Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican.

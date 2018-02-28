@@ -175,8 +175,6 @@ With the above mentioned trend in county flipping after the 2016 election this w
 
 And Clinton won on popular vote. Clearly she had wasted votes, this is what the gerrymandering "efficiency gap" is based on. Maybe it is a measure that can apply without gerrymandering. One consequence of this would seem to be that when a Democrat county flips it means more votes lost, on average, than when a Republican county flips. All things and all counties not being equal.
 
-If I continue to update this I will attempt to consider these other factors.
-
 ******
 
 ## 2016
@@ -228,8 +226,24 @@ However, for what follows I will consider each of the six that flipped.
 The Republican margin of victory in the state was...
 
 ```
-## [1] 112911
+## [1] "112911 (1.24%)"
 ```
+
+
+```
+## Florida Voter Turnout
+```
+
+```
+##        2004    2008    2012    2016
+## Dem 3583544 4282367 4235270 4485745
+## Gop 3964522 4046219 4162081 4605515
+## Tot 7548066 8328586 8397351 9091260
+```
+
+I had originally thought there might be some way to differentiate between new voters turning out and voters switching parties in their voting. Here the number of Democrat voters increases as well as the Republican ones. It is difficult to say that they had voters changing parties. But there really is no way to know. 
+
+Turnout across the election years will still be provided as an indication of voter motivation in the election.
 
 For seeing what happened in Florida I will first go back to the county level and see what the flipped counties look like just for this state.
 
@@ -347,7 +361,19 @@ Both parties gained votes in 2016. You can't really even say that the Democrats 
 The Republican margin of victory in the state was...
 
 ```
-## [1] 147314
+## [1] "147314 (10.13%)"
+```
+
+
+```
+## Iowa Voter Turnout
+```
+
+```
+##        2004    2008    2012    2016
+## Dem  741898  828940  816429  650790
+## Gop  751957  682379  727928  798923
+## Tot 1493855 1511319 1544357 1449713
 ```
 
 Flipped counties...
@@ -404,10 +430,22 @@ I don't know if I have the data to indicate whether this result is more unusual 
 The Republican margin of victory in the state was...
 
 ```
-## [1] 10704
+## [1] "10704 (0.24%)"
 ```
 
 Very close.
+
+
+```
+## Michigan Voter Turnout
+```
+
+```
+##        2004    2008    2012    2016
+## Dem 2479183 2872579 2561911 2268193
+## Gop 2313746 2048639 2112673 2279805
+## Tot 4792929 4921218 4674584 4547998
+```
 
 Flipped counties...
 
@@ -497,10 +535,22 @@ The loss seems statewide again. Although more due to the Democrat's not doing as
 The Republican margin of victory in the state was...
 
 ```
-## [1] 446841
+## [1] "446841 (8.54%)"
 ```
 
 A big Republican win.
+
+
+```
+## Ohio Voter Turnout
+```
+
+```
+##        2004    2008    2012    2016
+## Dem 2739952 2940044 2697260 2317001
+## Gop 2858727 2677820 2593779 2771984
+## Tot 5598679 5617864 5291039 5088985
+```
 
 Flipped counties...
 
@@ -583,7 +633,19 @@ It was a little difficult for me to understand how the numbers I'm getting accou
 The Republican margin of victory in the state was...
 
 ```
-## [1] 44292
+## [1] "44292 (0.75%)"
+```
+
+
+```
+## Pennsylvania Voter Turnout
+```
+
+```
+##        2004    2008    2012    2016
+## Dem 2938095 3276363 2907448 2844705
+## Gop 2793847 2655885 2619583 2912941
+## Tot 5731942 5932248 5527031 5757646
 ```
 
 Flipped counties...
@@ -665,10 +727,22 @@ The Democrats did well in the top spots. These appear from Wikipedia to be somew
 The Republican margin of victory in the state was...
 
 ```
-## [1] 22748
+## [1] "22748 (0.82%)"
 ```
 
 Again, pretty close.
+
+
+```
+## Wisconsin Voter Turnout
+```
+
+```
+##        2004    2008    2012    2016
+## Dem 1489504 1677211 1613950 1382210
+## Gop 1478120 1262393 1408746 1409467
+## Tot 2967624 2939604 3022696 2791677
+```
 
 Flipped counties...
 
@@ -758,3 +832,64 @@ The Top 10 gains for each party...
 ```
 
 The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.
+
+******
+
+## Voter Turnout
+
+Overall voter turnout.
+
+
+```
+## Overall Voter Turnout
+```
+
+```
+##          2004      2008      2012      2016
+## Dem  58789456  69373764  62228082  62411041
+## Gop  61711414  59756255  58772655  61062348
+## Tot 120500870 129130019 121000737 123473389
+```
+
+2016 was the second best of the four elections for both parties. Democrats better than Republican, again they had the popular vote edge.
+
+## Swing States
+
+Swing states are still of interest to me. Again, Florida and Ohio are frequently discussed as swing states and both are included above. The six critical states for 2016, in hindsight, compared to the 2012 election. But how well can you tell for 2020 who the critical battleground states will be? 
+
+It seemed to me that are some similarites here to finance. In finance risk is measured as volatility. How extremely do prices, or whatever, swing up and down? I did some checking for anything related to elections and volatility. I came across the [Pedersen Index](https://en.wikipedia.org/wiki/Pedersen_index). But this mainly seems concerned with volatility between multiple parties in European elections. Not regional volatility in a two party system. Not useful for my purposes.
+
+Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this [Washington Post article](https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/), specifically towards the bottom, the graphic where it says "Some swing states have low scores". You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren't that much higher.
+
+After some thought it seemed to me that what I am interested in is the probability that a state will swing. With 'P' indicating probability that seemed like it should be...
+
+P(swing) = P(moves right way)*P(moves enough to swing)
+
+With...
+
+P(moves the right way) = # of times voted for that party/times voted
+
+P(moves enough) = # of times moved enough/times moved
+
+There again seems to be a question of how is sample size worked to give meaningful statistics. At the state or individual county level there might not be enough data. Possibly it can be summed across counties somehow for the state? But then don't number of votes have to also be accounted for, something like [Effect size](https://en.wikipedia.org/wiki/Effect_size). How much does each county contribute to the possibility that the state flips?
+
+## Competitiveness
+
+To begin with I will consider something a little simpler, party margin of victory as a percentage as shown above for the six states. This could relate to the probabilities above as one measure of the distance that needs to be moved for a state to flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the more it is competitive. Possibly, a rough metric of how likely it is a swing state itself.
+
+
+```
+##    State Percentage
+## 22    MI      -0.24
+## 38    PA      -0.75
+## 49    WI      -0.82
+## 9     FL      -1.24
+## 33    NC      -3.81
+## 10    GA      -5.32
+## 35    OH      -8.54
+## 43    TX      -9.43
+## 15    IA     -10.13
+## 40    SC     -14.92
+```
+
+Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican.
