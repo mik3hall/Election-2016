@@ -598,15 +598,15 @@ sum(diff16)</code></pre>
 <p>It seemed to me that are some similarites here to finance. In finance risk is measured as volatility. How extremely do prices, or whatever, swing up and down? I did some checking for anything related to elections and volatility. I came across the <a href="https://en.wikipedia.org/wiki/Pedersen_index">Pedersen Index</a>. But this mainly seems concerned with volatility between multiple parties in European elections. Not regional volatility in a two party system. Not useful for my purposes.</p>
 <p>Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this <a href="https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/">Washington Post article</a>, specifically towards the bottom, the graphic where it says “Some swing states have low scores”. You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren’t that much higher.</p>
 <p>After some thought it seemed to me that what I am interested in is the probability that a state will swing. With ‘P’ indicating probability that seemed like it should be…</p>
-<p>P(swing) = P(moves right way)*P(moves enough to swing)</p>
+<p>P(swing) = P(vote moves right way)*P(vote moves enough to swing)</p>
 <p>With…</p>
-<p>P(moves the right way) = # of times voted for that party/times voted</p>
-<p>P(moves enough) = # of times moved enough/times moved</p>
+<p>P(vote moves the right way) = # of times voted for that party/times voted</p>
+<p>P(vote moves enough) = # of times vote moved enough/times voted</p>
 <p>There again seems to be a question of how is sample size worked to give meaningful statistics. At the state or individual county level there might not be enough data. Possibly it can be summed across counties somehow for the state? But then don’t number of votes have to also be accounted for, something like <a href="https://en.wikipedia.org/wiki/Effect_size">Effect size</a>. How much does each county contribute to the possibility that the state flips?</p>
 </div>
 <div id="competitiveness" class="section level2">
 <h2>Competitiveness</h2>
-<p>To begin with I will consider something a little simpler, party margin of victory as a percentage as shown above for the six states. This could relate to the probabilities above as one measure of the distance that needs to be moved for a state to flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the more it is competitive. Possibly, a rough metric of how likely it is a swing state itself.</p>
+<p>To begin with I will consider something a little simpler, party margin of victory as a percentage as was shown previously for the six states. This relates to the probabilities above as one measure of the distance that needs to be moved for a state to flip. The less distance needed to move the more probable a flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the closer to dead even, the more it is competitive. Possibly, a rough metric of how likely a swing state it is in itself.</p>
 <pre><code>##    State Percentage
 ## 22    MI      -0.24
 ## 38    PA      -0.75
@@ -618,7 +618,22 @@ sum(diff16)</code></pre>
 ## 43    TX      -9.43
 ## 15    IA     -10.13
 ## 40    SC     -14.92</code></pre>
-<p>Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican.</p>
+<p>Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican now, potentially swinging to Democrat.</p>
+</div>
+<div id="state-level-probabilities" class="section level2">
+<h2>State level probabilities</h2>
+<p>Again, the data probably isn’t adequate to realistically compute probabilities at this level but it should be reasonably easy to do. Since the Democrats won two and the Republicans two of the last four elections, the probabilites that a state’s votes go in the correct direction should be about 50-50. For the ‘competitive’ states this should, hopefully, be close to correct. Then, we will use the actual state level vote swings.</p>
+<pre><code>##    State Probs
+## 1     ME 0.667
+## 2     MN 0.667
+## 3     AZ 0.444
+## 4     IA 0.444
+## 5     NM 0.444
+## 6     UT 0.444
+## 7     VT 0.444
+## 8     FL 0.333
+## 9     MI 0.333
+## 10    NV 0.333</code></pre>
 </div>
 
 

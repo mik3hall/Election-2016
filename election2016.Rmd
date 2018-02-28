@@ -11,6 +11,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r Libraries, message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+```
+
 ## Introduction
 
 A recent news program discussion of gerrymandering got me interested in number
@@ -697,19 +701,19 @@ Somewhat interesting again is efficiency gap for gerrymandering almost seems to 
 
 After some thought it seemed to me that what I am interested in is the probability that a state will swing. With 'P' indicating probability that seemed like it should be...
 
-P(swing) = P(moves right way)*P(moves enough to swing)
+P(swing) = P(vote moves right way)*P(vote moves enough to swing)
 
 With...
 
-P(moves the right way) = # of times voted for that party/times voted
+P(vote moves the right way) = # of times voted for that party/times voted
 
-P(moves enough) = # of times moved enough/times moved
+P(vote moves enough) = # of times vote moved enough/times voted
 
 There again seems to be a question of how is sample size worked to give meaningful statistics. At the state or individual county level there might not be enough data. Possibly it can be summed across counties somehow for the state? But then don't number of votes have to also be accounted for, something like [Effect size](https://en.wikipedia.org/wiki/Effect_size). How much does each county contribute to the possibility that the state flips?
 
 ## Competitiveness
 
-To begin with I will consider something a little simpler, party margin of victory as a percentage as shown above for the six states. This could relate to the probabilities above as one measure of the distance that needs to be moved for a state to flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the more it is competitive. Possibly, a rough metric of how likely it is a swing state itself.
+To begin with I will consider something a little simpler, party margin of victory as a percentage as was shown previously for the six states. This relates to the probabilities above as one measure of the distance that needs to be moved for a state to flip. The less distance needed to move the more probable a flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the closer to dead even, the more it is competitive. Possibly, a rough metric of how likely a swing state it is in itself.
 
 ```{r competitiveness, echo=FALSE}
 margins <- ev[,"diff.16"]
@@ -722,4 +726,51 @@ comp$Percentage <- as.numeric(as.character(comp$Percentage))*100
 head(comp,10)
 ```
 
-Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican.
+Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican now, potentially swinging to Democrat.
+
+## State level probabilities
+
+Again, the data probably isn't adequate to realistically compute probabilities at this level but it should be reasonably easy to do. Since the Democrats won two and the Republicans two of the last four elections, the probabilites that a state's votes go in the correct direction should be about 50-50. For the 'competitive' states this should, hopefully, be close to correct. Then, we will use the actual state level vote swings.
+
+```{r state probs, echo=FALSE}
+# Need to calculate at state level for '04 and '08 - not included in ev
+d04 <- data04 %>% group_by(State) %>% summarize(sum(dem.Count04 - gop.Count04))
+names(d04) <- c("State","diff.04")
+ev$diff.04 <- d04$diff.04
+d08 <- data08 %>% group_by(State) %>% summarize(sum(dem.Count08 - gop.Count08))
+names(d08) <- c("State","diff.08")
+ev$diff.08 <- d08$diff.08
+probs <- c()
+for (state in ev$State) {
+  row <- ev[ev$State==state,]
+  values <- c(row$diff.04,row$diff.08,row$diff.12,row$diff.16)
+  diffs <- c(values[2]-values[1],values[3]-values[2],values[4]-values[3])
+  if (row$diff.16 > 0) {  # Compute flip to rep odds
+    r.cnt <- sum(diffs < 0)
+    p.dir <- r.cnt/3
+    p.dist <- sum(abs(diffs) > abs(row$diff.16))/3
+    probs <- c(probs,p.dir*p.dist)
+  }
+  else {      # Compute flip to dem odds
+    d.cnt <- sum(diffs > 0)
+    p.dir <- d.cnt/3
+    p.dist <- sum(abs(diffs) > abs(row$diff.16))/3
+    probs <- c(probs,p.dir*p.dist)
+  }
+}
+# mean.d12 <- sprintf("%.2f",mean(counties12$dem.Count12))
+
+state.probs <- data.frame(cbind(as.character(ev$State),sprintf("%.3f",probs)))
+names(state.probs) <- c("State","Probs")
+state.probs <- arrange(state.probs,-probs)
+head(state.probs,10)
+```
+
+Which doesn't look much like our list of six critical swing states which I would still believe is the inadequacy of the data at this level.
+
+## Simulations
+
+## Monte Carlo
+
+But more sophisticated simulation approaches could possibly compenstate for the lack of data. A Monte Carlo simulation can be attempted.
+

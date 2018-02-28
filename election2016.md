@@ -9,6 +9,8 @@ output:
 
 
 
+
+
 ## Introduction
 
 A recent news program discussion of gerrymandering got me interested in number
@@ -863,19 +865,19 @@ Somewhat interesting again is efficiency gap for gerrymandering almost seems to 
 
 After some thought it seemed to me that what I am interested in is the probability that a state will swing. With 'P' indicating probability that seemed like it should be...
 
-P(swing) = P(moves right way)*P(moves enough to swing)
+P(swing) = P(vote moves right way)*P(vote moves enough to swing)
 
 With...
 
-P(moves the right way) = # of times voted for that party/times voted
+P(vote moves the right way) = # of times voted for that party/times voted
 
-P(moves enough) = # of times moved enough/times moved
+P(vote moves enough) = # of times vote moved enough/times voted
 
 There again seems to be a question of how is sample size worked to give meaningful statistics. At the state or individual county level there might not be enough data. Possibly it can be summed across counties somehow for the state? But then don't number of votes have to also be accounted for, something like [Effect size](https://en.wikipedia.org/wiki/Effect_size). How much does each county contribute to the possibility that the state flips?
 
 ## Competitiveness
 
-To begin with I will consider something a little simpler, party margin of victory as a percentage as shown above for the six states. This could relate to the probabilities above as one measure of the distance that needs to be moved for a state to flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the more it is competitive. Possibly, a rough metric of how likely it is a swing state itself.
+To begin with I will consider something a little simpler, party margin of victory as a percentage as was shown previously for the six states. This relates to the probabilities above as one measure of the distance that needs to be moved for a state to flip. The less distance needed to move the more probable a flip. It can be seen standalone as a measure of how competitive the state is. The smaller the percentage, the closer to dead even, the more it is competitive. Possibly, a rough metric of how likely a swing state it is in itself.
 
 
 ```
@@ -892,4 +894,23 @@ To begin with I will consider something a little simpler, party margin of victor
 ## 40    SC     -14.92
 ```
 
-Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican.
+Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican now, potentially swinging to Democrat.
+
+## State level probabilities
+
+Again, the data probably isn't adequate to realistically compute probabilities at this level but it should be reasonably easy to do. Since the Democrats won two and the Republicans two of the last four elections, the probabilites that a state's votes go in the correct direction should be about 50-50. For the 'competitive' states this should, hopefully, be close to correct. Then, we will use the actual state level vote swings.
+
+
+```
+##    State Probs
+## 1     ME 0.667
+## 2     MN 0.667
+## 3     AZ 0.444
+## 4     IA 0.444
+## 5     NM 0.444
+## 6     UT 0.444
+## 7     VT 0.444
+## 8     FL 0.333
+## 9     MI 0.333
+## 10    NV 0.333
+```
