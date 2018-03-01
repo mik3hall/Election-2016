@@ -211,6 +211,22 @@ sum(diff16)</code></pre>
 <p>Taking things to the state level since this is where the electoral college votes are. We might ask at this level, what states flipped between 2012 and 2016?</p>
 <pre><code>##   State EV pop2010  dem12   rep12  dem16   rep16
 ## 1    AL  9 4779736 795696 1255925 729547 1318255</code></pre>
+<pre><code>##    State EV  pop2010   dem12   rep12   dem16   rep16 diff.12 diff.16
+## 1     AL  9  4779736  795696 1255925  729547 1318255 -460229 -588708
+## 2     AR  6  2915918  394409  647744  380494  684872 -253335 -304378
+## 3     AZ 11  6392017 1025232 1233654  116454  163387 -208422  -46933
+## 4     CA 55 37253956 7854285 4839958 8753788 4483810 3014327 4269978
+## 5     CO  9  5029196 1323101 1185243 1338870 1202484  137858  136386
+## 6     CT  7  3574097  905083  634892  897572  673215  270191  224357
+## 7     DC  3   601723  267070   21381  282830   12723  245689  270107
+## 8     DE  3   897934  242584  165484  235603  185127   77100   50476
+## 9     FL 29 18801310 4237756 4163447 4504975 4617886   74309 -112911
+## 10    GA 16  9687653 1773827 2078688 1877963 2089104 -304861 -211141
+## 11    HI  3  1360301  306658  121015  266891  128847  185643  138044
+## 12    IA  6  3046355  822544  730617  653669  800983   91927 -147314
+## 13    ID  4  1567582  212787  420911  189765  409055 -208124 -219290
+## 14    IL 20 12830632 3019512 2135216 3090729 2146015  884296  944714
+## 15    IN 11  6483802 1152887 1420543 1033126 1557286 -267656 -524160</code></pre>
 <pre><code>## 
 ## -1  0 
 ##  6 44</code></pre>
@@ -218,11 +234,11 @@ sum(diff16)</code></pre>
 <p>What were the six states that flipped Republican?</p>
 <pre><code>##    State EV diff.12 diff.16
 ## 9     FL 29   74309 -112911
-## 15    IA  6   91927 -147314
+## 12    IA  6   91927 -147314
 ## 22    MI 16  449313  -10704
 ## 35    OH 18  166272 -446841
 ## 38    PA 20  309840  -44292
-## 49    WI 10  213019  -22748</code></pre>
+## 48    WI 10  213019  -22748</code></pre>
 <p>These are the only six states. They decided the election. All other states had the same result as in 2012.</p>
 <p>How many electoral votes did these states account for?</p>
 <pre><code>## [1] 99</code></pre>
@@ -594,9 +610,9 @@ sum(diff16)</code></pre>
 </div>
 <div id="swing-states" class="section level2">
 <h2>Swing States</h2>
-<p>Swing states are still of interest to me. Again, Florida and Ohio are frequently discussed as swing states and both are included above. The six critical states for 2016, in hindsight, compared to the 2012 election. But how well can you tell for 2020 who the critical battleground states will be?</p>
+<p>Swing states are still of interest to me. Again, Florida and Ohio over the years have been frequently discussed as swing states and both are included above. In our list of six critical states for 2016 compared to the 2012 election. We found this list in hindsight. But how well can you tell for 2020 who the critical battleground states will be?</p>
 <p>It seemed to me that are some similarites here to finance. In finance risk is measured as volatility. How extremely do prices, or whatever, swing up and down? I did some checking for anything related to elections and volatility. I came across the <a href="https://en.wikipedia.org/wiki/Pedersen_index">Pedersen Index</a>. But this mainly seems concerned with volatility between multiple parties in European elections. Not regional volatility in a two party system. Not useful for my purposes.</p>
-<p>Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this <a href="https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/">Washington Post article</a>, specifically towards the bottom, the graphic where it says “Some swing states have low scores”. You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren’t that much higher.</p>
+<p>Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this <a href="https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/">Washington Post article</a>, specifically towards the bottom, the graphic where it says “Some swing states have low scores”. You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren’t that much higher. This I assume is not even based on presidential election data.</p>
 <p>After some thought it seemed to me that what I am interested in is the probability that a state will swing. With ‘P’ indicating probability that seemed like it should be…</p>
 <p>P(swing) = P(vote moves right way)*P(vote moves enough to swing)</p>
 <p>With…</p>
@@ -610,30 +626,58 @@ sum(diff16)</code></pre>
 <pre><code>##    State Percentage
 ## 22    MI      -0.24
 ## 38    PA      -0.75
-## 49    WI      -0.82
+## 48    WI      -0.82
 ## 9     FL      -1.24
-## 33    NC      -3.81
+## 27    NC      -3.81
 ## 10    GA      -5.32
 ## 35    OH      -8.54
 ## 43    TX      -9.43
-## 15    IA     -10.13
+## 12    IA     -10.13
 ## 40    SC     -14.92</code></pre>
 <p>Four of our six critical states head the list. The other two make the Top 10 list. Not too bad a metric itself, and very simple. All negative meaning Republican now, potentially swinging to Democrat.</p>
 </div>
 <div id="state-level-probabilities" class="section level2">
 <h2>State level probabilities</h2>
 <p>Again, the data probably isn’t adequate to realistically compute probabilities at this level but it should be reasonably easy to do. Since the Democrats won two and the Republicans two of the last four elections, the probabilites that a state’s votes go in the correct direction should be about 50-50. For the ‘competitive’ states this should, hopefully, be close to correct. Then, we will use the actual state level vote swings.</p>
-<pre><code>##    State Probs
-## 1     ME 0.667
-## 2     MN 0.667
-## 3     AZ 0.444
-## 4     IA 0.444
-## 5     NM 0.444
-## 6     UT 0.444
-## 7     VT 0.444
-## 8     FL 0.333
-## 9     MI 0.333
-## 10    NV 0.333</code></pre>
+<pre><code>##    State  Probs
+## 1     UT 44.444
+## 2     FL 33.333
+## 3     MI 33.333
+## 4     PA 33.333
+## 5     WI 33.333
+## 6     AZ 22.222
+## 7     GA 22.222
+## 8     IA 22.222
+## 9     IN 11.111
+## 10    NC 11.111</code></pre>
+<p>Which doesn’t look much like our list of six critical swing states, I would still believe this is the inadequacy of the data at this level.</p>
+</div>
+<div id="monte-carlo" class="section level2">
+<h2>Monte Carlo</h2>
+<p>But more sophisticated simulation approaches could possibly compenstate for the lack of data. A Monte Carlo simulation can be attempted. For this one I will randomly choose county votes from the four elections. Usual I think is to select random numbers from assumed or known probabilitly distributions.</p>
+<pre><code>## Monte Carlo</code></pre>
+<pre><code>##    State flipped.dg flipped.gd    P EV
+## 1     MI          0         50 1.00 16
+## 2     PA          0         50 1.00 20
+## 3     WI          0         50 1.00 10
+## 4     IA          0         39 0.78  6
+## 5     FL          0         16 0.32 29
+## 6     NV          9          0 0.18  6
+## 7     VA          8          0 0.16 13
+## 8     OH          0          7 0.14 18
+## 9     CO          1          0 0.02  9
+## 10    AL          0          0 0.00  9</code></pre>
+<p>Where for a simulated 2020 run…<br />
+<strong>flipped.dg</strong> is the number of times the state flipped democrat to gop<br />
+<strong>flipped.gd</strong> is the number of times the state flipped gop to democrat<br />
+<strong>P</strong> is the states probability of flipping in 2020.<br />
+<strong>EV</strong> is the state’s electoral votes.</p>
+<p>Monte Carlo appears to do a better job of highlighting what seem to be probable swing states. Notice where our six critical states turn up. The likely swing states don’t change much.</p>
+<p>The certain probabilities it gets do not seem realistic. I sampled using actual county results from the last four elections. Two of those were the Obama wins in ’08 and ’12, these results probably reflect his strength in these states for those elections vs. the GOP ones in ’04 and ’16. This could indicate some Democrat bias in this sampling approach - at least for those states. Given the ’16 result for Iowa, in my opinion, I would say it’s probability of flipping back to Democrat shouldn’t be so high either. Normally, a Monte Carlo simulation will involve thousands of iterations. I didn’t do that, fifty took some time and seemed sufficient for illustrative purposes.</p>
+<p>Given the limitations of the simulation I think it does roughly convey which are the likely swing states. Also, I think it gives a correct indication that flipping overall, for most states, isn’t that likely. Less than 10 states show any chance of flipping at all.</p>
+<p>Given that, although I had thought of doing additional simulations I think for now this will do.</p>
+<p>I still think looking at variance/volatility could have some interest. But not right now.</p>
+<p>I may still consider the Gerrymandering “Efficiency Gap” that sort of inspired this after a bit. If that does seem to have any relevance here or in regards to other elections if I can find the data. But for now I think I’m taking a break from this one.</p>
 </div>
 
 

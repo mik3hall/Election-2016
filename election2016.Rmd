@@ -136,6 +136,7 @@ ev <- read.csv("electoral.csv")
 ev[with(ev,order("State")),]
 ev$diff.12 <- ev$dem12-ev$rep12
 ev$diff.16 <- ev$dem16-ev$rep16
+print(head(ev,15))
 ev$flips <- state.flips(ev$diff.12,ev$diff.16)
 print(table(ev$flips))
 ```
@@ -693,11 +694,11 @@ turnouts
 
 ## Swing States
 
-Swing states are still of interest to me. Again, Florida and Ohio are frequently discussed as swing states and both are included above. The six critical states for 2016, in hindsight, compared to the 2012 election. But how well can you tell for 2020 who the critical battleground states will be? 
+Swing states are still of interest to me. Again, Florida and Ohio over the years have been frequently discussed as swing states and both are included above. In our list of six critical states for 2016 compared to the 2012 election. We found this list in hindsight. But how well can you tell for 2020 who the critical battleground states will be? 
 
 It seemed to me that are some similarites here to finance. In finance risk is measured as volatility. How extremely do prices, or whatever, swing up and down? I did some checking for anything related to elections and volatility. I came across the [Pedersen Index](https://en.wikipedia.org/wiki/Pedersen_index). But this mainly seems concerned with volatility between multiple parties in European elections. Not regional volatility in a two party system. Not useful for my purposes.
 
-Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this [Washington Post article](https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/), specifically towards the bottom, the graphic where it says "Some swing states have low scores". You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren't that much higher.
+Somewhat interesting again is efficiency gap for gerrymandering almost seems to relate. Looking at this [Washington Post article](https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/), specifically towards the bottom, the graphic where it says "Some swing states have low scores". You will notice that four of our six states of interest are in the bottom 10 and Pennsylvania and Iowa aren't that much higher. This I assume is not even based on presidential election data.
 
 After some thought it seemed to me that what I am interested in is the probability that a state will swing. With 'P' indicating probability that seemed like it should be...
 
@@ -755,7 +756,7 @@ for (state in ev$State) {
     d.cnt <- sum(diffs > 0)
     p.dir <- d.cnt/3
     p.dist <- sum(abs(diffs) > abs(row$diff.16))/3
-    probs <- c(probs,p.dir*p.dist)
+    probs <- c(probs,p.dir*p.dist*100)
   }
 }
 # mean.d12 <- sprintf("%.2f",mean(counties12$dem.Count12))
@@ -766,11 +767,71 @@ state.probs <- arrange(state.probs,-probs)
 head(state.probs,10)
 ```
 
-Which doesn't look much like our list of six critical swing states which I would still believe is the inadequacy of the data at this level.
-
-## Simulations
+Which doesn't look much like our list of six critical swing states, I would still believe this is the inadequacy of the data at this level.
 
 ## Monte Carlo
 
-But more sophisticated simulation approaches could possibly compenstate for the lack of data. A Monte Carlo simulation can be attempted.
+But more sophisticated simulation approaches could possibly compenstate for the lack of data. A Monte Carlo simulation can be attempted. For this one I will randomly choose county votes from the four elections. Usual I think is to select random numbers from assumed or known probabilitly distributions. 
+
+```{r sampling monte carlo, echo=FALSE}
+N <- 50        # Number of iterations
+cat("Monte Carlo")
+flipped <- data.frame(cbind(as.character(ev$State),rep(0,50),rep(0,50),rep(0,50)))
+names(flipped) <- c("State","flipped.dg","flipped.gd","flipped")
+flipped$flipped.dg <- as.integer(as.character(flipped$flipped.dg))
+flipped$flipped.gd <- as.integer(as.character(flipped$flipped.gd))
+flipped$flipped <- as.integer(as.character(flipped$flipped))
+for (i in 1:N) {
+  idx <- sample(1:4,nrow(data16),replace=T)
+  dnew <- c()
+  for (j in 1:nrow(data16)) {
+    if (idx[j] == 1) {
+      dnew <- c(dnew,data04$dem.Count04[j]-data04$gop.Count04[j])
+    }
+    else if (idx[j] == 2) {
+      dnew <- c(dnew,data08$dem.Count08[j]-data08$gop.Count08[j])
+    }
+    else if (idx[j] == 3) {
+      dnew <- c(dnew,data12$dem.Count12[j]-data12$gop.Count12[j])
+    }
+    else {
+      dnew <- c(dnew,data16$dem.Count16[j]-data16$gop.Count16[j])
+    }
+  }
+  df <- data.frame(cbind(as.character(data16$State),dnew))
+  names(df) <- c("State","Sim")
+  df$Sim <- as.integer(as.character(df$Sim))
+  df.state <- df %>% group_by(State) %>% summarize(sum(Sim))
+  names(df.state) <- c("State","Diff")
+  fdg <- as.numeric(ev$diff.16 > 0 & df.state$Diff < 0)
+  flipped$flipped.dg <- flipped$flipped.dg + fdg
+  fgd <- as.numeric(ev$diff.16 < 0 & df.state$Diff > 0)
+  flipped$flipped.gd <- flipped$flipped.gd + fgd
+  flipped$flipped <- flipped$flipped+fdg+fgd
+}
+flipped$P <- flipped$flipped/50
+flipped$EV <- ev$EV
+flipped <- arrange(flipped,-flipped)
+flipped <- flipped[,c(1:3,5:6)]
+print(head(flipped,10))
+```
+
+Where for a simulated 2020 run...  
+**flipped.dg** is the number of times the state flipped democrat to gop  
+**flipped.gd** is the number of times the state flipped gop to democrat  
+**P** is the states probability of flipping in 2020.  
+**EV** is the state's electoral votes.  
+
+Monte Carlo appears to do a better job of highlighting what seem to be probable swing states. Notice where our six critical states turn up. The likely swing states don't change much. 
+
+The certain probabilities it gets do not seem realistic. I sampled using actual county results from the last four elections. Two of those were the Obama wins in '08 and '12, these results probably reflect his strength in these states for those elections vs. the GOP ones in '04 and '16. This could indicate some Democrat bias in this sampling approach - at least for those states. Given the '16 result for Iowa, in my opinion, I would say it's probability of flipping back to Democrat shouldn't be so high either. Normally, a Monte Carlo simulation will involve thousands of iterations. I didn't do that, fifty took some time and seemed sufficient for illustrative purposes. 
+
+Given the limitations of the simulation I think it does roughly convey which are the likely swing states. Also, I think it gives a correct indication that flipping overall, for most states, isn't that likely. Less than 10 states show any chance of flipping at all.
+
+Given that, although I had thought of doing additional simulations I think for now this will do. 
+
+I still think looking at variance/volatility could have some interest. But not right now.
+
+I may still consider the Gerrymandering "Efficiency Gap" that sort of inspired this after a bit. If that does seem to have any relevance here or in regards to other elections if I can find the data. But for now I think I'm taking a break from this one. 
+
 
