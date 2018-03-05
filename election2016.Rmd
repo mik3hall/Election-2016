@@ -131,16 +131,13 @@ state.flips <- function(s1,s2) {
 	}
 	return(flips)
 }
-
 ev <- read.csv("electoral.csv")
-ev[with(ev,order("State")),]
 ev$diff.04 <- ev$dem04-ev$rep04
 ev$diff.08 <- ev$dem08-ev$rep08
 ev$diff.12 <- ev$dem12-ev$rep12
 ev$diff.16 <- ev$dem16-ev$rep16
-print(head(ev,15))
 ev$flips <- state.flips(ev$diff.12,ev$diff.16)
-print(table(ev$flips))
+table(ev$flips)
 ```
 
 You can see that six states flipped from Democrat to Republican, the rest all stayed the same, with no Republican states flipping to Democrat ones.
@@ -669,19 +666,6 @@ head(diff.r16.df,10)
 
 The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.
 
-```{r past state flips, echo=FALSE}
-ev$flips0408 <- state.flips(ev$diff.04,ev$diff.08)
-print("2004-2008")
-print(table(ev$flips0408))
-flipped <- ev[ev$flips0408==-1 | ev$flips0408==1,c("State","EV","diff.04","diff.08")]
-print(flipped)
-ev$flips0812 <- state.flips(ev$diff.08,ev$diff.12)
-print("2008-2012")
-print(table(ev$flips0812))
-flipped <- ev[ev$flips0812==-1,c("State","EV","diff.08","diff.12")]
-print(flipped)
-```
-
 ******
 
 ## Voter Turnout
@@ -845,8 +829,50 @@ Given the limitations of the simulation I think it does roughly convey which are
 
 Given that, although I had thought of doing additional simulations I think for now this will do. 
 
-I still think looking at variance/volatility could have some interest. But not right now.
+## Prior Years Swing States
 
-I may still consider the Gerrymandering "Efficiency Gap" that sort of inspired this after a bit. If that does seem to have any relevance here or in regards to other elections if I can find the data. But for now I think I'm taking a break from this one. 
+Throughout this I have considered what were the Swing states for the 2016 election. The impression maybe being that they are the only possible Swing states. Some backtesting can be done on this.
+
+Consider Swing states for the prior two elections...
+
+```{r past state flips, echo=FALSE}
+ev$flips0408 <- state.flips(ev$diff.04,ev$diff.08)
+print("2004-2008")
+print(table(ev$flips0408))
+flipped <- ev[ev$flips0408==-1 | ev$flips0408==1,c("State","EV","diff.04","diff.08")]
+print(flipped)
+print("2008 Competitiveness...")
+margins <- ev[,"diff.08"]
+pers <- sprintf("%.4f",margins/(ev[,"dem08"]+ev[,"rep08"]))
+comp <- data.frame(cbind(as.character(ev$State),pers))
+names(comp) <- c("State","Percentage")
+sorted <- order(comp$Percentage)
+comp <- comp[sorted,]
+comp$Percentage <- as.numeric(as.character(comp$Percentage))*100
+head(comp,10)
+ev$flips0812 <- state.flips(ev$diff.08,ev$diff.12)
+print("2008-2012")
+print(table(ev$flips0812))
+flipped <- ev[ev$flips0812==-1,c("State","EV","diff.08","diff.12")]
+print(flipped)
+print("2012 Competitiveness...")
+margins <- ev[,"diff.12"]
+pers <- sprintf("%.4f",margins/(ev[,"dem12"]+ev[,"rep12"]))
+comp <- data.frame(cbind(as.character(ev$State),pers))
+names(comp) <- c("State","Percentage")
+sorted <- order(comp$Percentage)
+comp <- comp[sorted,]
+comp$Percentage <- as.numeric(as.character(comp$Percentage))*100
+head(comp,10)
+```
+
+Neither of these appears to be as competitive as the 2016 election. There was some consideration of this on the NOVA broadcast "Prediction By The Numbers" that I just saw. 2008 seemed to be an election where the voters generally shifted Democrat as they generally seemed to go Republican in 2016. Maybe a little farther than they normally would as the two swings in 2012 seem to be regression to the mean sort with Indiana and North Carolina returning to more normal voting patterns. Although, given it's placement on both the 2012 and 2016 competitive lists, as well as two actual flips, North Carolina does seem a genuine swing state. 
+
+FL, IA and OH show as flipping in the 2008 election. I still think possibly this was an unusual swing for Iowa and the 2016 election may of been regression to the mean there. MI, PA and WI do not appear, looking at past results they all would probably have been considered Democrat base states having all been Democrat since 1988. Wisconsin even then. Iowa as well actually. It appears to be more Democrat base than I would of thought. Possibly it will turn back Democrat in a regression to the mean as well, despite having had almost half of it's counties flip.
+
+The Trump presidency has been somewhat unique. It could be hard to say what will follow it. A big swing to Democrat election seems possible right now.
+
+___________________________
+
 
 

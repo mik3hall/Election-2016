@@ -185,48 +185,6 @@ Taking things to the state level since this is where the electoral college votes
 
 
 ```
-##   State EV pop2010  dem04   rep04  dem08   rep08  dem12   rep12  dem16
-## 1    AL  9 4779736 693933 1176394 813479 1266546 795696 1255925 729547
-##     rep16
-## 1 1318255
-```
-
-```
-##    State EV  pop2010   dem04   rep04   dem08   rep08   dem12   rep12
-## 1     AL  9  4779736  693933 1176394  813479 1266546  795696 1255925
-## 2     AR  6  2915918  469953  572898  422310  638017  394409  647744
-## 3     AZ 11  6392017  893524 1104294 1034707 1230111 1025232 1233654
-## 4     CA 55 37253956 6745485 5509826 8274473 5011781 7854285 4839958
-## 5     CO  9  5029196 1001732 1101255 1288633 1073629 1323101 1185243
-## 6     CT  7  3574097  857488  693826  997772  629428  905083  634892
-## 7     DC  3   601723  202970   21256  245800   17367  267070   21381
-## 8     DE  3   897934  200152  171660  255459  152374  242584  165484
-## 9     FL 29 18801310 3583544 3964522 4282074 4045624 4237756 4163447
-## 10    GA 16  9687653 1366149 1914254 1844123 2048759 1773827 2078688
-## 11    HI  3  1360301  231708  194191  325871  120566  306658  121015
-## 12    IA  6  3046355  741898  751957  828940  682379  822544  730617
-## 13    ID  4  1567582  181098  409235  236440  403012  212787  420911
-## 14    IL 20 12830632 2891550 2345946 3419348 2031179 3019512 2135216
-## 15    IN 11  6483802  969011 1479438 1374039 1345648 1152887 1420543
-##      dem16   rep16 diff.04 diff.08 diff.12 diff.16
-## 1   729547 1318255 -482461 -453067 -460229 -588708
-## 2   380494  684872 -102945 -215707 -253335 -304378
-## 3   116454  163387 -210770 -195404 -208422  -46933
-## 4  8753788 4483810 1235659 3262692 3014327 4269978
-## 5  1338870 1202484  -99523  215004  137858  136386
-## 6   897572  673215  163662  368344  270191  224357
-## 7   282830   12723  181714  228433  245689  270107
-## 8   235603  185127   28492  103085   77100   50476
-## 9  4504975 4617886 -380978  236450   74309 -112911
-## 10 1877963 2089104 -548105 -204636 -304861 -211141
-## 11  266891  128847   37517  205305  185643  138044
-## 12  653669  800983  -10059  146561   91927 -147314
-## 13  189765  409055 -228137 -166572 -208124 -219290
-## 14 3090729 2146015  545604 1388169  884296  944714
-## 15 1033126 1557286 -510427   28391 -267656 -524160
-```
-
-```
 ## 
 ## -1  0 
 ##  6 44
@@ -872,46 +830,6 @@ The Top 10 gains for each party...
 
 The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.
 
-
-```
-## [1] "2004-2008"
-```
-
-```
-## 
-##  0  1 
-## 41  9
-```
-
-```
-##    State EV diff.04 diff.08
-## 5     CO  9  -99523  215004
-## 9     FL 29 -380978  236450
-## 12    IA  6  -10059  146561
-## 15    IN 11 -510427   28391
-## 27    NC 15 -435317   14177
-## 32    NM  5   -5988  125590
-## 33    NV  6  -21500  120909
-## 35    OH 18 -118601  262224
-## 45    VA 13 -262217  234527
-```
-
-```
-## [1] "2008-2012"
-```
-
-```
-## 
-## -1  0 
-##  2 48
-```
-
-```
-##    State EV diff.08 diff.12
-## 15    IN 11   28391 -267656
-## 27    NC 15   14177  -92004
-```
-
 ******
 
 ## Voter Turnout
@@ -1008,13 +926,13 @@ But more sophisticated simulation approaches could possibly compenstate for the 
 ## 1     MI          0         50 1.00 16
 ## 2     PA          0         50 1.00 20
 ## 3     WI          0         50 1.00 10
-## 4     IA          0         43 0.86  6
-## 5     FL          0         17 0.34 29
-## 6     NV         10          0 0.20  6
-## 7     VA         10          0 0.20 13
-## 8     OH          0          7 0.14 18
-## 9     CO          1          0 0.02  9
-## 10    AL          0          0 0.00  9
+## 4     IA          0         41 0.82  6
+## 5     FL          0         18 0.36 29
+## 6     VA         16          0 0.32 13
+## 7     NV         13          0 0.26  6
+## 8     OH          0          8 0.16 18
+## 9     AL          0          0 0.00  9
+## 10    AR          0          0 0.00  6
 ```
 
 Where for a simulated 2020 run...  
@@ -1031,8 +949,95 @@ Given the limitations of the simulation I think it does roughly convey which are
 
 Given that, although I had thought of doing additional simulations I think for now this will do. 
 
-I still think looking at variance/volatility could have some interest. But not right now.
+## Prior Years Swing States
 
-I may still consider the Gerrymandering "Efficiency Gap" that sort of inspired this after a bit. If that does seem to have any relevance here or in regards to other elections if I can find the data. But for now I think I'm taking a break from this one. 
+Throughout this I have considered what were the Swing states for the 2016 election. The impression maybe being that they are the only possible Swing states. Some backtesting can be done on this.
+
+Consider Swing states for the prior two elections...
+
+
+```
+## [1] "2004-2008"
+```
+
+```
+## 
+##  0  1 
+## 41  9
+```
+
+```
+##    State EV diff.04 diff.08
+## 5     CO  9  -99523  215004
+## 9     FL 29 -380978  236148
+## 12    IA  6  -10059  146561
+## 15    IN 11 -510427   28391
+## 27    NC 15 -435317   14177
+## 32    NM  5   -5988  125590
+## 33    NV  6  -21500  120909
+## 35    OH 18 -118775  262224
+## 45    VA 13 -262217  234527
+```
+
+```
+## [1] "2008 Competitiveness..."
+```
+
+```
+##    State Percentage
+## 24    MO      -0.14
+## 26    MT      -2.47
+## 10    GA      -5.26
+## 41    SD      -8.59
+## 3     AZ      -8.63
+## 28    ND      -8.87
+## 40    SC      -9.09
+## 43    TX     -11.87
+## 25    MS     -13.28
+## 49    WV     -13.35
+```
+
+```
+## [1] "2008-2012"
+```
+
+```
+## 
+## -1  0 
+##  2 48
+```
+
+```
+##    State EV diff.08 diff.12
+## 15    IN 11   28391 -267656
+## 27    NC 15   14177  -92004
+```
+
+```
+## [1] "2012 Competitiveness..."
+```
+
+```
+##    State Percentage
+## 27    NC      -2.07
+## 10    GA      -7.91
+## 3     AZ      -9.23
+## 24    MO      -9.56
+## 15    IN     -10.40
+## 40    SC     -10.62
+## 25    MS     -11.60
+## 26    MT     -14.07
+## 43    TX     -16.02
+## 18    LA     -17.49
+```
+
+Neither of these appears to be as competitive as the 2016 election. There was some consideration of this on the NOVA broadcast "Prediction By The Numbers" that I just saw. 2008 seemed to be an election where the voters generally shifted Democrat as they generally seemed to go Republican in 2016. Maybe a little farther than they normally would as the two swings in 2012 seem to be regression to the mean sort with Indiana and North Carolina returning to more normal voting patterns. Although, given it's placement on both the 2012 and 2016 competitive lists, as well as two actual flips, North Carolina does seem a genuine swing state. 
+
+FL, IA and OH show as flipping in the 2008 election. I still think possibly this was an unusual swing for Iowa and the 2016 election may of been regression to the mean there. MI, PA and WI do not appear, looking at past results they all would probably have been considered Democrat base states having all been Democrat since 1988. Wisconsin even then. Iowa as well actually. It appears to be more Democrat base than I would of thought. Possibly it will turn back Democrat in a regression to mean as well, despite having had almost half of it's counties flip.
+
+The Trump presidency has been somewhat unique. It could be hard to say what will follow it. A big swing to Democrat election seems possible right now.
+
+___________________________
+
 
 
