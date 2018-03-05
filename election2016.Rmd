@@ -134,6 +134,8 @@ state.flips <- function(s1,s2) {
 
 ev <- read.csv("electoral.csv")
 ev[with(ev,order("State")),]
+ev$diff.04 <- ev$dem04-ev$rep04
+ev$diff.08 <- ev$dem08-ev$rep08
 ev$diff.12 <- ev$dem12-ev$rep12
 ev$diff.16 <- ev$dem16-ev$rep16
 print(head(ev,15))
@@ -666,6 +668,19 @@ head(diff.r16.df,10)
 ```
 
 The familiar pattern of very few Democrat gains but consistent Republican ones. It wasn't a big margin of victory but no county stands out here as one that might of swung the state.
+
+```{r past state flips, echo=FALSE}
+ev$flips0408 <- state.flips(ev$diff.04,ev$diff.08)
+print("2004-2008")
+print(table(ev$flips0408))
+flipped <- ev[ev$flips0408==-1 | ev$flips0408==1,c("State","EV","diff.04","diff.08")]
+print(flipped)
+ev$flips0812 <- state.flips(ev$diff.08,ev$diff.12)
+print("2008-2012")
+print(table(ev$flips0812))
+flipped <- ev[ev$flips0812==-1,c("State","EV","diff.08","diff.12")]
+print(flipped)
+```
 
 ******
 

@@ -1,0 +1,144 @@
+---
+title: "Gerrymandering"
+author: "Mike Hall"
+date: "3/3/2018"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Libraries, message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+```
+
+## Gerrymandering
+
+```{r load}
+# 2002-2010 WI Election Data with 2011 Wards
+w0210 <- read.csv("20022010_WI_Election_Data_with_2011_Wards.csv")
+# 2012-2020 WI Election Data with 2011 Wards 
+w11 <- read.csv("20122020_WI_Election_Data_with_2011_Wards.csv")
+w11 <- w11[,c("OBJECTID_1","OBJECTID","GEOID10","NAME","ASM","CNTY_NAME","PERSONS18","WSADEM12","WSADEM14","WSADEM16","WSADEM212","WSAREP12","WSAREP14","WSAREP16","WSAREP212","WSAREP214")]
+# 2012-2020 WI Election Data with 2017 Wards
+w17 <- read.csv("Wards2017_ED12toED16.csv")
+str(w0210)
+# For imputation
+a0210 <- w0210 %>% group_by(ASM) %>% summarize(dem02 <- sum(WSADEM02), dem04 <- sum(WSADEM04), dem06 <- sum(WSADEM06), dem08 <- sum(WSADEM08), dem10 <- sum(WSADEM10), rep02 <- sum(WSAREP02), rep04 <- sum(WSAREP04), rep06 <- sum(WSAREP06), rep08 <- sum(WSAREP08), rep10 <- sum(WSAREP10), voting.age <- sum(PERSONS18),n())
+names(a0210) <- c("ASM","dem02","dem04","dem06","dem08","dem10","rep02","rep04","rep06","rep08","rep10","voting.age","n")
+str(a0210)
+rows <- nrow(a0210)
+a.rep <- data.frame(cbind(rep(NA,rows),rep(NA,rows),rep(NA,rows),rep(NA,rows),rep(NA,rows)))
+names(a.rep) <- c("r02","r04","r06","r08","r10")
+a.rep[which(a0210$rep02>a0210$dem02 & a0210$dem02 != 0),"r02"] <- a0210[a0210$rep02>a0210$dem02 & a0210$dem02 != 0,"rep02"]
+a.rep[which(a0210$rep04>a0210$dem04 & a0210$dem04 != 0),"r04"] <- a0210[a0210$rep04>a0210$dem04 & a0210$dem04 != 0,"rep04"]
+a.rep[which(a0210$rep06>a0210$dem06 & a0210$dem06 != 0),"r06"] <- a0210[a0210$rep06>a0210$dem06 & a0210$dem06 != 0,"rep06"]
+a.rep[which(a0210$rep08>a0210$dem08 & a0210$dem08 != 0),"r08"] <- a0210[a0210$rep08>a0210$dem08 & a0210$dem08 != 0,"rep08"]
+a.rep[which(a0210$rep10>a0210$dem10 & a0210$dem10 != 0),"r10"] <- a0210[a0210$rep10>a0210$dem10 & a0210$dem10 != 0,"rep10"]
+avg.rep <- rowMeans(a.rep,na.rm=TRUE)
+avg.rep[is.na(avg.rep)] <- 0
+table(is.na(avg.rep))
+a.dem <- data.frame(cbind(rep(NA,rows),rep(NA,rows),rep(NA,rows),rep(NA,rows),rep(NA,rows)))
+names(a.dem) <- c("d02","d04","d06","d08","d10")
+a.dem[which(a0210$dem02>a0210$rep02 & a0210$rep02 != 0),"d02"] <- a0210[a0210$dem02>a0210$rep02 & a0210$rep02 != 0,"dem02"]
+a.dem[which(a0210$dem04>a0210$rep04 & a0210$rep04 != 0),"d04"] <- a0210[a0210$dem04>a0210$rep04 & a0210$rep04 != 0,"dem04"]
+a.dem[which(a0210$dem06>a0210$rep06 & a0210$rep06 != 0),"d06"] <- a0210[a0210$dem06>a0210$rep06 & a0210$rep06 != 0,"dem06"]
+a.dem[which(a0210$dem08>a0210$rep08 & a0210$rep08 != 0),"d08"] <- a0210[a0210$dem08>a0210$rep08 & a0210$rep08 != 0,"dem08"]
+a.dem[which(a0210$dem10>a0210$rep10 & a0210$rep10 != 0),"d10"] <- a0210[a0210$dem10>a0210$rep10 & a0210$rep10 != 0,"dem10"]
+avg.dem <- rowMeans(a.dem,na.rm=TRUE)
+avg.dem[is.na(avg.dem)] <- 0
+table(is.na(avg.dem))
+```
+
+```{r Efficiency Gap}
+
+quickEfficiencyGap <- function(dem,rep) {
+  # The efficiency gap, then, is simply the difference between the parties
+  # respective wasted votes, divided by the total number of votes cast in    # the election.
+  #
+  # quick assumes only two parties
+  # Efficiency Gap = Seat Margin – (2 x Vote Margin)
+  #
+  dem.seats <- sum(dem > rep)
+  dem.share <- sum(dem)/sum(dem+rep)
+  eg.dem <- ((dem.seats/length(dem))*100-50) - (dem.share*100-50)*2
+  rep.seats <- sum(rep > dem)
+  rep.share <- sum(rep)/sum(dem+rep)
+  eg.rep <- ((rep.seats/length(rep))*100-50) - (rep.share*100-50)*2
+  eg <- data.frame(cbind(c(dem.seats,rep.seats),c(dem.share,rep.share),c(eg.dem,eg.rep)))
+  eg
+}
+  a12 <- w11 %>% group_by(ASM) %>% summarize(dem <- sum(WSADEM12), dem2 <- sum(WSADEM212), rep <- sum(WSAREP12), rep2 <- sum(WSAREP212), voting.age <- sum(PERSONS18),n())
+  names(a12) <- c("asm","dem","dem2","rep","rep2","voting.age","n")
+  head(a12)
+  table(a12$dem == 0)
+  uncontested <- a12[a12$dem == 0 | a12$rep == 0,]
+  uncontested
+  mean(uncontested$voting.age)
+  sd(uncontested$voting.age)
+  avg.turnout <- (a12$dem+a12$dem2+a12$rep+a12$rep2)/a12$voting.age
+  # Imputing Uncontested
+  # should be party average from 02-10 * avg.turnout (if party avg)
+  #           loser getting avg.turnout - that
+  # if no party avg loser gets 25% avg.turnout, winner the rest
+  #
+  # First assume prior years cover all - then recheck
+  table(a12$dem==0)
+  table(is.na(a12$dem))
+  for (i in 1:nrow(a12)) {
+    if (a12$dem[i] == 0) {
+      cat(i,"dem",avg.dem[i],avg.turnout[i],"\n")
+      str(avg.dem)
+      str(avg.turnout)
+      a12$dem[i] <- avg.dem[i] * avg.turnout[i]
+      a12$rep[i] <- avg.turnout[i] - a12$dem[i]
+    }
+    else if (a12$rep[i] == 0) {
+      cat(i,"rep","\n")
+      a12$rep[i] <- avg.rep[i] * avg.turnout[i] 
+      a12$dem[i] <- avg.turnout[i] - a12$rep[i]
+     }
+  }
+  table(a12$dem==0)
+  table(is.na(a12$dem))
+#  a.rep <- w0210 %>% group_by(ASM) %>% summarize(dem <- #sum(WSADEM02+WSADEM04+WSADEM06+WSADEM08+WSADEM10), rep <- #sum(WSAREP02+WSAREP04+WSAREP06+WSAREP08+WSAREP10))
+#  contested <- a12[a12$dem != 0 & a12$rep != 0,]
+#  contested.d <- a12[a12$dem>a12$rep & a12$]
+#  max((contested$dem-contested$rep)/(contested$dem+contested$rep))
+  table(a12$rep == 0)
+  table(is.na(a12$rep))
+#  max((contested$rep-contested$dem)/(contested$dem+contested$rep))
+#  a12 <- a12[a12$dem != 0 & a12$rep != 0,]
+  eg <- quickEfficiencyGap(a12$dem,a12$rep)
+  eg
+```
+
+## Reference
+
+### Data
+
+[Wisconsin Data Libarary](http://legis.wisconsin.gov/ltsb/gis/data/)
+
+### Efficiency Gap
+[The Most Gerrymandered States Ranked by Efficiency Gap and Seat Advantage](https://www.azavea.com/blog/2017/07/19/gerrymandered-states-ranked-efficiency-gap-seat-advantage/)
+
+### Equal Population Requirement
+
+[Where are the lines drawn?](http://redistricting.lls.edu/where.php)
+
+### Uncontested Counties Imputation
+
+[Partisan Gerrymandering and the Efficiency Gap](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1946&context=public_law_and_legal_theory)  
+Discussion of uncontested and imputation beginning on P. 27.
+
+
+[2016 Election Results Prove
+Gerrymandering](https://urbanmilwaukee.com/2016/12/28/data-wonk-2016-election-results-prove-gerrymandering/)  
+Discussion of imputation in the comments.
+
+[Here’s how the Supreme Court could
+decide whether your vote will count](https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/?utm_term=.b3c0a0b9d31d)  
+The state map graphics show how frequent uncontested State Assembly elections are in Wisconsin. It seems a major concern when values for almost half of the elections need to be imputed. 
