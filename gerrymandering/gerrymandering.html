@@ -141,9 +141,17 @@ avg.dem &lt;- rowSums(a0210[,2:6])/nz
 nz &lt;- rowSums(a0210[,7:11] != 0)
 avg.rep &lt;- rowSums(a0210[,7:11])/nz
 names(a0210) &lt;- c(&quot;ASM&quot;,&quot;dem02&quot;,&quot;dem04&quot;,&quot;dem06&quot;,&quot;dem08&quot;,&quot;dem10&quot;,&quot;rep02&quot;,&quot;rep04&quot;,&quot;rep06&quot;,&quot;rep08&quot;,&quot;rep10&quot;,&quot;voting.age&quot;,&quot;n&quot;)</code></pre>
-<pre class="r"><code>quickEfficiencyGap &lt;- function(dem,rep) {
+<pre class="r"><code>efficiencyGap &lt;- function() {
+     # Wasted votes - Winner
+     # votes in excess of those need to win total-50%+1
+     # Wasted votes = Loser all of them
+     # Second candidate for same party - wasted for both?
+     # indpendent &amp; 3rd party
+}
+
+quickEfficiencyGap &lt;- function(dem,rep) {
   # The efficiency gap, then, is simply the difference between the parties
-  # respective wasted votes, divided by the total number of votes cast in    # the election.
+  # respective wasted votes, divided by the total number of votes cast in   # the election.
   #
   # quick assumes only two parties
   # Efficiency Gap = Seat Margin – (2 x Vote Margin)
@@ -207,6 +215,21 @@ eg</code></pre>
 <pre><code>##   X1        X2        X3
 ## 1 39 0.5170623 -14.01853
 ## 2 60 0.4829377  14.01853</code></pre>
+<pre class="r"><code># Determine wasted votes
+a12.dwin &lt;- a12$dem &gt; a12$rep
+table(a12.dwin)</code></pre>
+<pre><code>## a12.dwin
+## FALSE  TRUE 
+##    60    39</code></pre>
+<pre class="r"><code>a12.rwasted &lt;- sum(a12$rep[a12.dwin])+sum(a12$rep[!a12.dwin]-(a12$dem[!a12.dwin]+1))
+a12.rwasted</code></pre>
+<pre><code>## [1] 568109.9</code></pre>
+<pre class="r"><code>a12.dwasted &lt;- sum(a12$dem[!a12.dwin])+sum(a12$dem[a12.dwin]-(a12$rep[a12.dwin]+1))
+a12.dwasted</code></pre>
+<pre><code>## [1] 1122939</code></pre>
+<pre class="r"><code>eg.wasted &lt;- sum(a12.rwasted-a12.dwasted)/sum(a12$rep+a12$dem)
+eg.wasted</code></pre>
+<pre><code>## [1] -0.2107994</code></pre>
 </div>
 <div id="reference" class="section level2">
 <h2>Reference</h2>

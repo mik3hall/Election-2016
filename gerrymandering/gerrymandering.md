@@ -33,9 +33,17 @@ names(a0210) <- c("ASM","dem02","dem04","dem06","dem08","dem10","rep02","rep04",
 
 
 ```r
+efficiencyGap <- function() {
+     # Wasted votes - Winner
+     # votes in excess of those need to win total-50%+1
+     # Wasted votes = Loser all of them
+     # Second candidate for same party - wasted for both?
+     # indpendent & 3rd party
+}
+
 quickEfficiencyGap <- function(dem,rep) {
   # The efficiency gap, then, is simply the difference between the parties
-  # respective wasted votes, divided by the total number of votes cast in    # the election.
+  # respective wasted votes, divided by the total number of votes cast in   # the election.
   #
   # quick assumes only two parties
   # Efficiency Gap = Seat Margin – (2 x Vote Margin)
@@ -102,6 +110,45 @@ eg
 ##   X1        X2        X3
 ## 1 39 0.5170623 -14.01853
 ## 2 60 0.4829377  14.01853
+```
+
+```r
+# Determine wasted votes
+a12.dwin <- a12$dem > a12$rep
+table(a12.dwin)
+```
+
+```
+## a12.dwin
+## FALSE  TRUE 
+##    60    39
+```
+
+```r
+a12.rwasted <- sum(a12$rep[a12.dwin])+sum(a12$rep[!a12.dwin]-(a12$dem[!a12.dwin]+1))
+a12.rwasted
+```
+
+```
+## [1] 568109.9
+```
+
+```r
+a12.dwasted <- sum(a12$dem[!a12.dwin])+sum(a12$dem[a12.dwin]-(a12$rep[a12.dwin]+1))
+a12.dwasted
+```
+
+```
+## [1] 1122939
+```
+
+```r
+eg.wasted <- sum(a12.rwasted-a12.dwasted)/sum(a12$rep+a12$dem)
+eg.wasted
+```
+
+```
+## [1] -0.2107994
 ```
 
 ## Reference

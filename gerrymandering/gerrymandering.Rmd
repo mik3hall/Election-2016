@@ -108,8 +108,16 @@ for (i in 1:nrow(a12)) {
 eg <- quickEfficiencyGap(a12$dem,a12$rep)
 eg
 
-
-dem.wasted <- 
+# Determine wasted votes
+a12.dwin <- a12$dem > a12$rep
+table(a12.dwin)
+a12.rwasted <- sum(a12$rep[a12.dwin])+sum(a12$rep[!a12.dwin]-(a12$dem[!a12.dwin]+1))
+a12.rwasted
+a12.dwasted <- sum(a12$dem[!a12.dwin])+sum(a12$dem[a12.dwin]-(a12$rep[a12.dwin]+1))
+a12.dwasted
+eg.wasted <- sum(a12.rwasted-a12.dwasted)/sum(a12$rep+a12$dem)
+eg.wasted
+# Actually seems just as easy to calculate, but gets different result
 ```
 
 ## Reference
