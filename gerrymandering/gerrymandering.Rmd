@@ -45,10 +45,22 @@ efficiencyGap <- function(dem,rep) {
   
   # Determine wasted votes
   dwin <- dem > rep
-  rwasted <- sum(rep[dwin])+sum(rep[!dwin]-(dem[!dwin]+1))
-  dwasted <- sum(dem[!dwin])+sum(dem[dwin]-(rep[dwin]+1))
+  rwasted <- sum(rep[dwin])+sum(rep[!dwin]-((dem[!dwin]+rep[!dwin])/2+1))
+  dwasted <- sum(dem[!dwin])+sum(dem[dwin]-((dem[dwin]+rep[dwin])/2+1))
   eg.wasted <- sum(rwasted-dwasted)/sum(rep+dem)
   eg.wasted
+}
+
+# Based on [How the Efficiency Gap Works](https://www.brennancenter.org/sites/default/files/legal-work/How_the_Efficiency_Gap_Standard_Works.pdf)
+testEG <- function() {
+  dem <- c(75,60,43,48,49)
+  rep <- c(25,40,57,52,51)
+  eg.test <- efficiencyGap(dem,rep)
+  eg.test
+  dem <- c(53,53,53,53,15)
+  rep <- c(47,47,47,47,85)
+  eg.test <- efficiencyGap(dem,rep)
+  eg.test
 }
 
 quickEfficiencyGap <- function(dem,rep) {
@@ -120,7 +132,9 @@ eg
 cat("Efficiency Gap calculation based on wasted votes")
 eg.wasted <- efficiencyGap(a12$dem,a12$rep)*100
 eg.wasted
-# Actually seems just as easy to calculate, but gets different result
+
+#eg.test <- testEG()
+#eg.test
 ```
 
 Two methods are indicated for computing the Efficiency Gap. One based on wasted votes, the other based on seat and vote share. The second is algebraically derived from the first under certain assumptions. "Instead, if we assume that all districts are equal in population (which is constitutionally required), and that there are only two parties (which is typical in SMD systems)". Where SMD is single member district, each district has a single representative. The later is indicated as a possibly easier way to compute the EG without having to total up all the wasted votes. Although, with R this way might be easier.
