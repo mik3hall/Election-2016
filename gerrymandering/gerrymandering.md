@@ -14,142 +14,55 @@ output:
 ## Gerrymandering
 
 
-```r
-# 2002-2010 WI Election Data with 2011 Wards
-w0210 <- read.csv("20022010_WI_Election_Data_with_2011_Wards.csv")
-# 2012-2020 WI Election Data with 2011 Wards 
-w11 <- read.csv("20122020_WI_Election_Data_with_2011_Wards.csv")
-w11 <- w11[,c("OBJECTID_1","OBJECTID","GEOID10","NAME","ASM","CNTY_NAME","PERSONS18","WSADEM12","WSADEM14","WSADEM16","WSADEM212","WSAREP12","WSAREP14","WSAREP16","WSAREP212","WSAREP214")]
-# 2012-2020 WI Election Data with 2017 Wards
-w17 <- read.csv("Wards2017_ED12toED16.csv")
-# For imputation
-a0210 <- w0210 %>% group_by(ASM) %>% summarize(dem02 <- sum(WSADEM02), dem04 <- sum(WSADEM04), dem06 <- sum(WSADEM06), dem08 <- sum(WSADEM08), dem10 <- sum(WSADEM10), rep02 <- sum(WSAREP02), rep04 <- sum(WSAREP04), rep06 <- sum(WSAREP06), rep08 <- sum(WSAREP08), rep10 <- sum(WSAREP10), voting.age <- sum(PERSONS18), n())
-nz <- rowSums(a0210[,2:6] != 0)
-avg.dem <- rowSums(a0210[,2:6])/nz
-nz <- rowSums(a0210[,7:11] != 0)
-avg.rep <- rowSums(a0210[,7:11])/nz
-names(a0210) <- c("ASM","dem02","dem04","dem06","dem08","dem10","rep02","rep04","rep06","rep08","rep10","voting.age","n")
+
+
 ```
-
-
-```r
-efficiencyGap <- function() {
-     # Wasted votes - Winner
-     # votes in excess of those need to win total-50%+1
-     # Wasted votes = Loser all of them
-     # Second candidate for same party - wasted for both?
-     # indpendent & 3rd party
-}
-
-quickEfficiencyGap <- function(dem,rep) {
-  # The efficiency gap, then, is simply the difference between the parties
-  # respective wasted votes, divided by the total number of votes cast in   # the election.
-  #
-  # quick assumes only two parties
-  # Efficiency Gap = Seat Margin – (2 x Vote Margin)
-  #
-  dem.seats <- sum(dem > rep)
-  dem.share <- sum(dem)/sum(dem+rep)
-  eg.dem <- ((dem.seats/length(dem))*100-50) - (dem.share*100-50)*2
-  rep.seats <- sum(rep > dem)
-  rep.share <- sum(rep)/sum(dem+rep)
-  eg.rep <- ((rep.seats/length(rep))*100-50) - (rep.share*100-50)*2
-  eg <- data.frame(cbind(c(dem.seats,rep.seats),c(dem.share,rep.share),c(eg.dem,eg.rep)))
-  eg
-}
-  
-# Imputing Uncontested
-# should be party average from 02-10 * avg.turnout (if party avg)
-#           loser getting avg.turnout - that
-# if no party avg loser gets 25% avg.turnout, winner the rest
-#
-a12 <- w11 %>% group_by(ASM) %>% summarize(dem <- sum(WSADEM12), dem2 <- sum(WSADEM212), rep <- sum(WSAREP12), rep2 <- sum(WSAREP212), voting.age <- sum(PERSONS18),n())
-names(a12) <- c("asm","dem","dem2","rep","rep2","voting.age","n")
-avg.turnout <- (a12$dem+a12$dem2+a12$rep+a12$rep2)/a12$voting.age
-xavg.dem <- is.na(avg.dem) 
-xavg.rep <- is.na(avg.rep)
-for (i in 1:nrow(a12)) {
-  if (a12$dem[i] == 0) {      # Uncontested w/ no dem
-    if (xavg.dem[i]) {        # If no average from prior elections
-      a12$rep[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.75)  # use avg turnout %
-      a12$dem[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.25)
-    }
-    else {
-      if (avg.rep[i] > avg.dem[i]) {  # Make sure it's a rep win
-        a12$rep[i] <- avg.rep[i]      # and use actual prior avg's
-        a12$dem[i] <- avg.dem[i]      # 02-10
-      }
-      else {           # Don't think shoud happen but use % again
-        a12$rep[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.75)
-        a12$dem[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.25)
-      }
-    }
-  }
-  else if (a12$rep[i] == 0) {  # Uncontested w/ no rep
-    if (xavg.rep[i]) {         # If no rep avg from 02-10    
-      a12$dem[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.75)   # use avg turnout %
-      a12$rep[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.25)
-    }
-    else {
-      if (avg.dem[i] > avg.rep[i]) {  # Make sure it's a dem win
-        a12$dem[i] <- avg.dem[i]      # and use actual prior avg's
-        a12$rep[i] <- avg.rep[i]      # 02-10
-      }
-      else {            # Don't think should happen but use % again
-        a12$dem[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.75) # use avg turnout %
-        a12$rep[i] <- as.integer(avg.turnout[i]*a12$voting.age[i]*.25)    
-      }
-    }
-  }
-}
-eg <- quickEfficiencyGap(a12$dem,a12$rep)
-eg
+## Efficiency Gap calculation based on seat margin and vote margin shares
 ```
 
 ```
-##   X1        X2        X3
-## 1 39 0.5170623 -14.01853
-## 2 60 0.4829377  14.01853
-```
-
-```r
-# Determine wasted votes
-a12.dwin <- a12$dem > a12$rep
-table(a12.dwin)
+##     Seats Vote Share Efficincy Gap
+## Dem    39  0.5170623     -14.01853
+## Rep    60  0.4829377      14.01853
 ```
 
 ```
-## a12.dwin
-## FALSE  TRUE 
-##    60    39
-```
-
-```r
-a12.rwasted <- sum(a12$rep[a12.dwin])+sum(a12$rep[!a12.dwin]-(a12$dem[!a12.dwin]+1))
-a12.rwasted
+## Efficiency Gap calculation based on wasted votes
 ```
 
 ```
-## [1] 568109.9
+## [1] -21.07994
 ```
 
-```r
-a12.dwasted <- sum(a12$dem[!a12.dwin])+sum(a12$dem[a12.dwin]-(a12$rep[a12.dwin]+1))
-a12.dwasted
-```
+Two methods are indicated for computing the Efficiency Gap. One based on wasted votes, the other based on seat and vote share. The second is algebraically derived from the first under certain assumptions. "Instead, if we assume that all districts are equal in population (which is constitutionally required), and that there are only two parties (which is typical in SMD systems)". Where SMD is single member district, each district has a single representative. The later is indicated as a possibly easier way to compute the EG without having to total up all the wasted votes. Although, with R this way might be easier.
+I believe the Washington Post article "Here’s how the Supreme Court could
+decide whether your vote will count" below mixes up the Efficiency Gap calculations for 2012 and 2014. That indicated that the numbers for these years were provided by Simon Jackman. He appears to have done these calculations for the Wisconsin court case. 
 
-```
-## [1] 1122939
-```
+From "Assessing the Current Wisconsin State Legislative Districting Plan" - link below.
 
-```r
-eg.wasted <- sum(a12.rwasted-a12.dwasted)/sum(a12$rep+a12$dem)
-eg.wasted
-```
+> 8. The current Wisconsin state legislative districting plan (the “Current Wisconsin
+Plan”). In Wisconsin in 2012, the average Democratic share of districtlevel,
+two-party vote (V) is estimated to be 51.4% (±0.6, the uncertainty
+stemming from imputations for uncontested seats); recall that Obama won
+53.5% of the two-party presidential vote in Wisconsin in 2012. Yet Democrats
+won only 39 seats in the 99 seat legislature (S = 39.4%), making Wisconsin
+one of 7 states in 2012 where we estimate V > 50% but S < 50%. In Wisconsin
+in 2014, V is estimated to be 48.0% (±0.8) and Democrats won 36
+of 99 seats (S = 36.4%).
 
-```
-## [1] -0.2107994
-```
+>9. Accordingly, Wisconsin’s EG measures in 2012 and 2014 are large and negative:
+-.13 and -.10 (to two digits of precision). The 2012 estimate is the
+largest EG estimate in Wisconsin over the 42 year period spanned by this
+analysis (1972-2014).
+
+Obama's results are mentioned because this assessment uses the "uniform swing" imputation method for missing (uncontested) districts. I attempted imputation based on past results from 2002-2010.
+
+So, we see that Jackman's numbers are the reverse of what the Washington Post article indicates. Maybe not a big difference unless you want to compare your own calculations to what is shown. For 2012 Jackman actually got the -.13, where I get -14.01853. The difference is probably due to vote shares. For 2012 Jackman gives "51.4% (±0.6, the uncertainty
+stemming from imputations for uncontested seats);" whereas, as shown above, I get 0.5170623 for 2012 using a different imputation determination. 
+
+This also means that Jackman used the seat and vote share method. I also did the wasted vote calculation getting -21.07994. A very different, and worse, result. It seems like you should be able to think about it this way. If you assumed the vote shares were actually equal then the Republicans got, 60-39/(60+39) = .2121, a 21% vote advantage that they shouldn't of. So the 20% number seems more reasonable? 
+
+The assumptions made by the share method not applying here might be the reason it gives less accurate results. One thing that I thought might be a problem is the "equal population" assumption when given varying voter turnout. Some of the issues that have been raised against the Efficiency Gap are addressed in the link below at "THE MEASURE OF A METRIC: THE DEBATE OVER QUANTIFYING PARTISAN GERRYMANDERING". At least at a rather cursory browse of that it seems to mainly defend Efficiency Gap assuming the wasted vote calculation, including issues for voter turnout. Again, in a rather quick look I saw nothing specifically addressing separate issues with the shares method. So for now my concern that different voter turnouts might affect the equal population assumption remains. 
 
 ## Reference
 
@@ -178,7 +91,15 @@ Discussion of imputation in the comments.
 decide whether your vote will count](https://www.washingtonpost.com/graphics/2017/politics/courts-law/gerrymander/?utm_term=.b3c0a0b9d31d)  
 The state map graphics show how frequent uncontested State Assembly elections are in Wisconsin. It seems a major concern when values for almost half of the elections need to be imputed. 
 
+### Efficiency Gap caluculations in the Wisconsin court cases
+
+[The research that convinced SCOTUS to take the Wisconsin gerrymandering case, explained](https://www.vox.com/the-big-idea/2017/7/11/15949750/research-gerrymandering-wisconsin-supreme-court-partisanship)
+
+[Assessing the Current Wisconsin State Legislative Districting Plan](http://www.campaignlegalcenter.org/sites/default/files/WI%20whitford%2020150708%20complaint%20exh3.pdf)
+
 ### Efficiency Gap Cautions
 
 [The Flaw in America's 'Holy Grail' Against Gerrymandering](https://www.theatlantic.com/science/archive/2018/01/efficiency-gap-gerrymandering/551492/)
 
+[THE MEASURE OF A METRIC:
+THE DEBATE OVER QUANTIFYING PARTISAN GERRYMANDERING](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3077766)
