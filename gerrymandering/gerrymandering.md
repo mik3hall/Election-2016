@@ -17,17 +17,17 @@ output:
 
 
 ```
-## Efficiency Gap calculation based on seat margin and vote margin shares
+## Efficiency Gap calculation based on seat margin and vote margin shares - 2012
 ```
 
 ```
-##     Seats Vote Share Efficincy Gap
-## Dem    39  0.5170623     -14.01853
-## Rep    60  0.4829377      14.01853
+##     Seats Vote Share Efficiency Gap
+## Dem    39  0.5170623      -14.01853
+## Rep    60  0.4829377       14.01853
 ```
 
 ```
-## Efficiency Gap calculation based on wasted votes
+## Efficiency Gap calculation based on wasted votes - 2012
 ```
 
 ```
@@ -35,29 +35,36 @@ output:
 ```
 
 ```
-## [1] 0.398
+## Efficiency Gap calculation based on seat margin and vote margin shares - 2014
 ```
 
-Two methods are indicated for computing the Efficiency Gap. One based on wasted votes, the other based on seat and vote share. The second is algebraically derived from the first under certain assumptions. "Instead, if we assume that all districts are equal in population (which is constitutionally required), and that there are only two parties (which is typical in SMD systems)". Where SMD is single member district, each district has a single representative. The later is indicated as a possibly easier way to compute the EG without having to total up all the wasted votes. Although, with R this way might be easier.
+```
+##     Seats Vote Share Efficiency Gap
+## Dem    36  0.4791253      -9.461425
+## Rep    63  0.5208747       9.461425
+```
+
+```
+## Efficiency Gap calculation based on wasted votes - 2014
+```
+
+```
+## [1] -12.01769
+```
+
+Two methods are indicated for computing the Efficiency Gap. One based on wasted votes, the other based on seat and vote share. The second is algebraically derived from the first under certain assumptions.  
+
+> <chunk style="font-size:15px">Instead, if we assume that all districts are <mark>equal in population</mark> (which is constitutionally required), and that there are <mark>only two parties</mark> (which is typical in SMD systems)</chunk>
+
+Where <mark>SMD is single member district</mark>, each district has a single representative. The later is indicated as a possibly easier way to compute the EG without having to total up all the wasted votes. Although, with R this way might be easier.
 I believe the Washington Post article "Here’s how the Supreme Court could
 decide whether your vote will count" below mixes up the Efficiency Gap calculations for 2012 and 2014. That indicated that the numbers for these years were provided by Simon Jackman. He appears to have done these calculations for the Wisconsin court case. 
 
 From "Assessing the Current Wisconsin State Legislative Districting Plan" - link below.
 
-> 8. The current Wisconsin state legislative districting plan (the “Current Wisconsin
-Plan”). In Wisconsin in 2012, the average Democratic share of districtlevel,
-two-party vote (V) is estimated to be 51.4% (±0.6, the uncertainty
-stemming from imputations for uncontested seats); recall that Obama won
-53.5% of the two-party presidential vote in Wisconsin in 2012. Yet Democrats
-won only 39 seats in the 99 seat legislature (S = 39.4%), making Wisconsin
-one of 7 states in 2012 where we estimate V > 50% but S < 50%. In Wisconsin
-in 2014, V is estimated to be 48.0% (±0.8) and Democrats won 36
-of 99 seats (S = 36.4%).
+> <chunk style="font-size:15px">8. The current Wisconsin state legislative districting plan (the “Current Wisconsin Plan”). In Wisconsin in 2012, the average Democratic share of district level, two-party vote (V) is estimated to be 51.4% (±0.6, the uncertainty stemming from imputations for uncontested seats); recall that Obama won 53.5% of the two-party presidential vote in Wisconsin in 2012. Yet Democrats won only 39 seats in the 99 seat legislature (S = 39.4%), making Wisconsin one of 7 states in 2012 where we estimate V > 50% but S < 50%. In Wisconsin in 2014, V is estimated to be 48.0% (±0.8) and Democrats won 36 of 99 seats (S = 36.4%).</chunk>
 
->9. Accordingly, Wisconsin’s EG measures in 2012 and 2014 are large and negative:
--.13 and -.10 (to two digits of precision). The 2012 estimate is the
-largest EG estimate in Wisconsin over the 42 year period spanned by this
-analysis (1972-2014).
+> <chunk style="font-size:15px">9. Accordingly, <mark>Wisconsin’s EG measures in 2012 and 2014 are large and negative: -.13 and -.10</mark> (to two digits of precision). The 2012 estimate is the largest EG estimate in Wisconsin over the 42 year period spanned by this analysis (1972-2014).</chunk>
 
 Obama's results are mentioned because this assessment uses the "uniform swing", based on the presidential election, imputation method for missing (uncontested) districts. I attempted imputation based on past results from 2002-2010.
 
@@ -67,6 +74,8 @@ stemming from imputations for uncontested seats);" whereas, as shown above, I ge
 This also means that Jackman used the seat and vote share method. I also did the wasted vote calculation getting -21.07994. A very different, and worse, result. It seems like you should be able to think about it this way. If you assumed the vote shares were actually equal then the Republicans got, 60-39/(60+39) = .2121, a 21% vote advantage that they shouldn't of. So the 20% number seems more reasonable? 
 
 The assumptions made by the share method not applying here might be the reason it gives less accurate results. One thing that I thought might be a problem is the "equal population" assumption when given varying voter turnout. Some of the issues that have been raised against the Efficiency Gap are addressed in the link below at "THE MEASURE OF A METRIC: THE DEBATE OVER QUANTIFYING PARTISAN GERRYMANDERING". At least at a rather cursory browse of that it seems to mainly defend Efficiency Gap assuming the wasted vote calculation, including issues for voter turnout. Again, in a rather quick look I saw nothing specifically addressing separate issues with the shares method. So for now my concern that different voter turnouts might affect the equal population assumption remains. 
+
+> <chunk style="font-size:15px"> If turnout is assumed to be equal, the “simplified form” of the efficiency gap can be used: (S – 0.5) – 2 × (V – 0.5), where S is a party’s statewide seat share and V is the party’s vote share averaged across all districts. <mark>To take into account district-level variations in </mark><mark style="background-color:red;">turnout</mark>, <mark>the “full form” of the efficiency gap <mark style="background-color:red;">must</mark> be used instead</mark>.</chunk>
 
 At this point, unless I am completely off in calculating wasted vote based Efficiency Gaps, I would say there would be concerns in using the share based method for deciding the extent of gerrymandering in court cases. I could still be completely off in my calculations, I have nothing there yet to check my results against.
 
